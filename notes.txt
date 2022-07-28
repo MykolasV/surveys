@@ -1,0 +1,72 @@
+Create a survey by providing custom questions and asnwers.
+
+Collect answers from multiple users and get statistics with
+the percentages for each answer to each question.
+
+The answers can be 1 required out of multiple, 1 or more required
+out of multiple and "write your answer".
+
+
+Administrator
+  - name
+  - surveys
+
+Survey
+  - questions
+  - participants
+  - answers
+  - stats
+
+Question
+  - type (closed - chose 1, nominal - chose 1 or more, open - write your answer)
+  - text
+  - options
+
+Answer
+  - value
+
+Participant
+  - id
+
+
+
+- The landing page introduces the application. You can sign up/in to start using it.
+- The user signs up/in. This user is an Admin.
+  - The dash board with created surveys is presented.
+  - An admin user can create, delete, edit or view a survey.
+
+  - Creating a Survey
+    - add title
+    - add questions
+      - for each Question
+        - select question type
+        - add question text
+        - add Options (except for open questions)
+
+  - Edit a Survey
+    - edit title
+    - add Question
+    - delete Question
+    - edit Question
+      - type
+      - text
+      - options (except for open questions)
+        - add Option
+        - delete Option
+
+  - View Survey
+    - questions
+    - for each question
+      - click on a question
+      - if a question is 'closed' or 'nominal'
+        - show selected options with percentages of popularity
+      - if a question is 'open'
+        - show all answers for the question 
+
+- Participant visits the Survey page
+  - answer questions
+  - edit answers
+  - submit the survey
+    - Participant is added to participants of the survey
+    - Answers are save to the survey
+
