@@ -1,5 +1,5 @@
 {
-  "name": "survey",
+  "name": "surveys",
   "version": "1.0.0",
   "description": "An application for creating surveys.",
   "main": "app.js",
