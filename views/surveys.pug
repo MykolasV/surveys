@@ -4,7 +4,12 @@ block main
   if surveys === undefined || surveys.length === 0
     p#no_list You don't have any surveys. Why not create one?
   else
-    p You have some surveys. We need to list them.
+    ul#surveys_list
+      each survey in surveys
+        li
+          a(href=`/surveys/${survey.id}`)
+            h2= survey.title
+            p #{survey.numberOfQuestions()}
 
 block headerLinks
   .actions
