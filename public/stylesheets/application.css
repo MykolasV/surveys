@@ -1,0 +1,30 @@
+body {
+  text-align: center;
+  font-size: 20px;
+}
+
+header {
+  padding: 40px 0;
+}
+
+header .actions {
+  margin: 40px 0;
+}
+
+h1 {
+  font-size: 38px;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  background-color: #baf6e2;
+  margin-bottom: 10px;
+}
+
+li h2, li p {
+  display: inline-block;
+  margin: 10px;
+}
