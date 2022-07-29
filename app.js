@@ -1,6 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
 
+const Survey = require("./lib/survey");
+
 const app = express();
 const host = "localhost";
 const port = 3000;
@@ -13,9 +15,28 @@ app.set("view engine", "pug");
 
 app.use(morgan("common"));
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
 
+// Redirect start page
 app.get("/", (req, res) => {
+  res.redirect("/surveys");
+});
+
+// Render the list of surveys
+app.get("/surveys", (req, res) => {
   res.render("surveys", { surveys });
+});
+
+// Render new survey page
+app.get("/surveys/new", (req, res) => {
+  res.render("new-survey");
+});
+
+// Create a new todo list
+app.post("/surveys", (req, res) => {
+  let title = req.body.surveyTitle.trim();
+  surveys.push(new Survey(title));
+  res.redirect("/surveys");
 });
 
 // Listener
