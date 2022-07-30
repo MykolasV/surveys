@@ -28,3 +28,17 @@ li h2, li p {
   display: inline-block;
   margin: 10px;
 }
+
+.flash {
+  margin: 0 0 20px 0;
+}
+
+.flash p {
+  padding: 4px 0;
+  margin: 0 0 4px 0;
+  background-color: rgb(255, 161, 118);
+}
+
+.error p {
+  color: #ff0000;
+}

@@ -32,11 +32,27 @@ app.get("/surveys/new", (req, res) => {
   res.render("new-survey");
 });
 
-// Create a new todo list
+// Create a new survey
 app.post("/surveys", (req, res) => {
   let title = req.body.surveyTitle.trim();
-  surveys.push(new Survey(title));
-  res.redirect("/surveys");
+  if (title.length === 0) {
+    res.render("new-survey", {
+      errorMessage: "A tittle was not provided.",
+    });
+  } else if (title.length > 100) {
+    res.render("new-survey", {
+      errorMessage: "Survey title must be between 1 and 100 characters.",
+      surveyTitle: title,
+    });
+  } else if (surveys.some(survey => survey.title === title)) {
+    res.render("new-survey", {
+      errorMessage: "Survey title must be unique.",
+      surveyTitle: title,
+    });
+  } else {
+    surveys.push(new Survey(title));
+    res.redirect("/surveys");
+  }
 });
 
 // Listener

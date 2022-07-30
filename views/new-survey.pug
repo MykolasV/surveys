@@ -4,13 +4,14 @@ block main
   form(action="/surveys" method="post")
     dl
       dt
-        label(for="surveyTitle") Enter the title for your new survey:
+        label(for="surveyTitle") Title
       dd
         input(type="text"
               id="surveyTitle"
               name="surveyTitle"
-              placeholder="Survey Title")
-
+              placeholder="Survey Title"
+              value=surveyTitle)
+      
     fieldset.actions
       input(type="submit" value="Save")
       a(href="/surveys") Cancel

@@ -15,4 +15,8 @@ html(lang="en-GB")
       block headerLinks
 
     main
+      if errorMessage 
+        .flash.error 
+          p= errorMessage
+
       block main
