@@ -4,24 +4,28 @@ body {
 }
 
 header {
-  padding: 40px 0;
+  padding: 40px 0 20px;
 }
 
 header .actions {
-  margin: 40px 0;
+  margin: 30px 0;
 }
 
 h1 {
   font-size: 38px;
 }
 
+#surveys_list {
+  margin: 30px 0 0 0;
+}
+
 a {
   text-decoration: none;
 }
 
-li {
-  background-color: #baf6e2;
-  margin-bottom: 10px;
+#surveys_list li {
+  background-color: #abbffa;
+  margin-bottom: 5px;
 }
 
 li h2, li p {
@@ -30,15 +34,16 @@ li h2, li p {
 }
 
 .flash {
-  margin: 0 0 20px 0;
-}
-
-.flash p {
   padding: 4px 0;
   margin: 0 0 4px 0;
-  background-color: rgb(255, 161, 118);
 }
 
-.error p {
+.error {
+  background-color: rgb(255, 161, 118);
   color: #ff0000;
+}
+
+.success {
+  background-color: #baf6e2;
+  color: #02f702;
 }
