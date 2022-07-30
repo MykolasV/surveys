@@ -4,6 +4,7 @@ const flash = require("express-flash");
 const session = require("express-session");
 const store = require("connect-loki");
 const LokiStore = store(session);
+const { body, validationResult } = require("express-validator");
 
 const Survey = require("./lib/survey");
 
@@ -67,32 +68,62 @@ app.get("/surveys/new", (req, res) => {
 });
 
 // Create a new survey
-app.post("/surveys", (req, res) => {
-  let title = req.body.surveyTitle.trim();
+// app.post("/surveys", (req, res) => {
+//   let title = req.body.surveyTitle.trim();
 
-  if (title.length === 0) {
-    req.flash("error", "A title was not provided.");
-    res.render("new-survey", {
-      flash: req.flash(),
-    });
-  } else if (title.length > 100) {
-    req.flash("error", "Survey title must be between 1 and 100 characters.");
-    res.render("new-survey", {
-      flash: req.flash(),
-      surveyTitle: title,
-    });
-  } else if (surveys.some(survey => survey.title === title)) {
-    req.flash("error", "Survey title must be unique.");
-    res.render("new-survey", {
-      flash: req.flash(),
-      surveyTitle: title,
-    });
-  } else {
-    surveys.push(new Survey(title));
-    req.flash("success", "The survey has been created.");
-    res.redirect("/surveys");
+//   if (title.length === 0) {
+//     req.flash("error", "A title was not provided.");
+//     res.render("new-survey", {
+//       flash: req.flash(),
+//     });
+//   } else if (title.length > 100) {
+//     req.flash("error", "Survey title must be between 1 and 100 characters.");
+//     res.render("new-survey", {
+//       flash: req.flash(),
+//       surveyTitle: title,
+//     });
+//   } else if (surveys.some(survey => survey.title === title)) {
+//     req.flash("error", "Survey title must be unique.");
+//     res.render("new-survey", {
+//       flash: req.flash(),
+//       surveyTitle: title,
+//     });
+//   } else {
+//     surveys.push(new Survey(title));
+//     req.flash("success", "The survey has been created.");
+//     res.redirect("/surveys");
+//   }
+// });
+
+app.post("/surveys",
+  [
+    body("surveyTitle")
+    .trim()
+    .isLength({ min: 1})
+    .withMessage("The survey title is required.")
+    .isLength({ max: 100 })
+    .withMessage("Survey title must be between 1 and 100 characters.")
+    .custom(title => {
+      let duplicate = surveys.find(survey => survey.title === title);
+      return duplicate === undefined;
+    })
+    .withMessage("Survey title must be unique."),
+  ],
+  (req, res) => {
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      errors.array().forEach(message => req.flash("error", message.msg));
+      res.render("new-survey", {
+        flash: req.flash(),
+        surveyTitle: req.body.surveyTitle,
+      });
+    } else {
+      surveys.push(new Survey(req.body.surveyTitle));
+      req.flash("success", "The survey has been created.");
+      res.redirect("/surveys");
+    }
   }
-});
+)
 
 // Listener
 app.listen(port, host, () => {
