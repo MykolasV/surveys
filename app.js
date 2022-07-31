@@ -68,33 +68,6 @@ app.get("/surveys/new", (req, res) => {
 });
 
 // Create a new survey
-// app.post("/surveys", (req, res) => {
-//   let title = req.body.surveyTitle.trim();
-
-//   if (title.length === 0) {
-//     req.flash("error", "A title was not provided.");
-//     res.render("new-survey", {
-//       flash: req.flash(),
-//     });
-//   } else if (title.length > 100) {
-//     req.flash("error", "Survey title must be between 1 and 100 characters.");
-//     res.render("new-survey", {
-//       flash: req.flash(),
-//       surveyTitle: title,
-//     });
-//   } else if (surveys.some(survey => survey.title === title)) {
-//     req.flash("error", "Survey title must be unique.");
-//     res.render("new-survey", {
-//       flash: req.flash(),
-//       surveyTitle: title,
-//     });
-//   } else {
-//     surveys.push(new Survey(title));
-//     req.flash("success", "The survey has been created.");
-//     res.redirect("/surveys");
-//   }
-// });
-
 app.post("/surveys",
   [
     body("surveyTitle")
