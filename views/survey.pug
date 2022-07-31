@@ -1,0 +1,21 @@
+extends layout
+
+block main
+  header
+    h2= survey.title
+    form.edit(action=`/surveys/${survey.id}/edit` method="get")
+      button(type="submit") Edit
+
+  ul#questions
+    each question in questions
+      li
+        p= question.text
+        form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
+          button(type="submit") Edit
+        form.delete(action=`/surveys/${survey.id}/questions/${question.id}/destroy`
+                    method="get")
+          button(type="submit") Delete
+
+block headerLinks
+  .actions
+    a.list(href="/surveys") All Surveys

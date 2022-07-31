@@ -52,6 +52,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// Find a survey with the indicated ID. Returns `undefined` if not found.
+// Note that `id` must be numeric.
+const loadSurvey = id => {
+  return surveys.find(survey => survey.id === id);
+}
+
 // Redirect start page
 app.get("/", (req, res) => {
   res.redirect("/surveys");
@@ -98,7 +104,28 @@ app.post("/surveys",
   }
 )
 
+// Render individual survey and its questions
+app.get("/surveys/:surveyId", (req, res, next) => {
+  let surveyId = req.params.surveyId;
+  let survey = loadSurvey(+surveyId);
+
+  if (survey === undefined) {
+    next(new Error("Not found."));
+  } else {
+    res.render("survey", { 
+      survey,
+      questions: survey.questions,
+    });
+  }
+});
+
+// Error handler
+app.use((err, req, res, _next) => {
+  console.log(err); // Writes more extensive information to the console log
+  res.status(404).send(err.message);
+});
+
 // Listener
 app.listen(port, host, () => {
-  console.log(`Todos is listening on port ${port} of ${host}!`);
+  console.log(`Surveys is listening on port ${port} of ${host}!`);
 });

@@ -7,6 +7,10 @@ header {
   padding: 40px 0 20px;
 }
 
+header h2 {
+  display: inline-block;
+}
+
 header .actions {
   margin: 30px 0;
 }
@@ -46,4 +50,15 @@ li h2, li p {
 .success {
   background-color: #baf6e2;
   color: #02f702;
+}
+
+#questions li {
+  background-color: #d1dbf8;
+  margin-bottom: 5px;
+}
+
+form.edit,
+form.delete {
+  display: inline-block;
+  margin: 0 0 0 10px;
 }
