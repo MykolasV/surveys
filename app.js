@@ -207,6 +207,46 @@ app.post("/surveys/:surveyId/destroy", (req, res, next) => {
   }
 });
 
+// Edit survey title
+app.post("/surveys/:surveyId/edit",
+  [
+    body("surveyTitle")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("The survey title is required.")
+      .isLength({ max: 100 })
+      .withMessage("Survey title must be between 1 and 100 characters.")
+      .custom(title => {
+        let duplicate = surveys.find(survey => survey.title === title);
+        return duplicate === undefined;
+      })
+      .withMessage("Survey title must be unique"),
+  ],
+  (req, res, next) => {
+    let surveyId = req.params.surveyId;
+    let survey = loadSurvey(+surveyId);
+
+    if (!survey) {
+      next(new Error("Not Found."));
+    } else {
+      let errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        errors.array().forEach(message => req.flash("error", message.msg));
+
+        res.render("edit-survey", {
+          flash: req.flash(),
+          surveyTitle: req.body.surveyTitle,
+          survey,
+        });
+      } else {
+        survey.changeTitle(req.body.surveyTitle);
+        req.flash("success", "Survey title updated.");
+        res.redirect(`/surveys/${surveyId}`);
+      }
+    }
+  }
+);
+
 // Error handler
 app.use((err, req, res, _next) => {
   console.log(err); // Writes more extensive information to the console log
