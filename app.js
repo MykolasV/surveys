@@ -120,16 +120,15 @@ app.get("/surveys/:surveyId", (req, res, next) => {
 });
 
 // Delete a question from a survey
-app.post("/surveys/:surveyId/questions/:questionId/destroy", (req, res) => {
-  // let surveyId = req.params.surveyId;
-  // let questionId = req.params.questionId;
+app.post("/surveys/:surveyId/questions/:questionId/destroy", (req, res, next) => {
   let { surveyId, questionId } = req.params;
-
   let survey = loadSurvey(+surveyId);
 
   if (survey && survey.removeQuestion(+questionId)) {
     req.flash("success", "The question was deleted.");
     res.redirect(`/surveys/${surveyId}`);
+  } else {
+    next(new Error("Not found."));
   }
 });
 
