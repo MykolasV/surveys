@@ -143,8 +143,8 @@ app.post("/surveys/:surveyId/questions",
       .trim()
       .custom((optionString, { req }) => {
         if (["closed", "nominal"].includes(req.body.type)) {
-          let options = optionString.split(/, +|,/);
-          return options.length === 0;
+          let options = optionString.split(/, +|,/).filter(str => str.trim().length > 0);
+          return options.length > 0;
         } else {
           return true;
         }
