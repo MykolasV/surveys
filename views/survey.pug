@@ -16,6 +16,33 @@ block main
                     method="post")
           button(type="submit") Delete
 
+  .add_question
+    h3 Add Question
+    form(action=`/surveys/${survey.id}/questions` method="post")
+      dl
+        dt
+          label(for="question") Question 
+        dd
+          input(type="text"
+                name="question"
+                id="question"
+                placeholder="question...")
+        dt 
+          label(for="type") Type
+        dd 
+          select(name="type" id="type")
+            option(value="closed") Closed 
+            option(value="nominal") Nominal 
+            option(value="open") Open
+        dt 
+          label(for="options") Options
+        dd
+          input(type="text"
+                name="options"
+                id="options"
+                placeholder="option1, option2, option3...")
+      button(type="submit") Add
+
 block headerLinks
   .actions
     a.list(href="/surveys") All Surveys

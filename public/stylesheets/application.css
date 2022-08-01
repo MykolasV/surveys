@@ -62,3 +62,21 @@ form.delete {
   display: inline-block;
   margin: 0 0 0 10px;
 }
+
+.add_question {
+  margin: 60px 0 0 0;
+}
+
+.add_question h3 {
+  margin: 0 0 20px 0;
+}
+
+.add_question dt,
+.add_question dd {
+  display: inline-block;
+  margin: 0 10px 0;
+}
+
+.add_question button {
+  margin: 20px 0 0 0;
+}

@@ -93,7 +93,6 @@ app.post("/surveys",
     if (!errors.isEmpty()) {
       errors.array().forEach(message => req.flash("error", message.msg));
       res.render("new-survey", {
-        flash: req.flash(),
         surveyTitle: req.body.surveyTitle,
       });
     } else {
@@ -130,6 +129,53 @@ app.post("/surveys/:surveyId/questions/:questionId/destroy", (req, res, next) =>
   } else {
     next(new Error("Not found."));
   }
+});
+
+// Add a new question to a survey
+app.post("/surveys/:surveyId/questions",
+  [
+    body("question")
+      .trim()
+      .isLength({ min: 1})
+      .withMessage("The question field is required."),
+    body("options")
+      .trim()
+      .custom((optionString, { req }) => {
+        if (["closed", "nominal"].includes(req.body.type)) {
+          let options = optionString.split(/, +|,/);
+          return options.length > 0;
+        } else {
+          return true;
+        }
+      })
+      .withMessage("Please provide options in the correct format.")
+  ],
+  (req, res, next) => {
+    let surveyId = req.params.surveyId;
+    let survey = loadSurvey(+surveyId);
+
+    let question = req.body.question;
+    let type = req.body.type;
+    let options = req.body.options.split(/, +|,/);
+
+    if (!survey) {
+      next(new Error("Not Found."));
+    } else {
+      let errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        errors.array().forEach(message => req.flash("error", message.msg));
+
+        res.render("survey", {
+          survey,
+          questions: survey.questions,
+        });
+      } else {
+        survey.addQuestion(type, question, options);
+        req.flash("success", "The question was added.");
+        res.redirect(`/surveys/${surveyId}`);
+      }
+    }
 });
 
 // Error handler
