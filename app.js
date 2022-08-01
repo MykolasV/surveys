@@ -180,6 +180,33 @@ app.post("/surveys/:surveyId/questions",
     }
 });
 
+// Render edit survey form
+app.get("/surveys/:surveyId/edit", (req, res, next) => {
+  let surveyId = req.params.surveyId;
+  let survey = loadSurvey(+surveyId);
+
+  if (!survey) {
+    next(new Error("Not Found"));
+  } else {
+    res.render("edit-survey", { survey });
+  }
+});
+
+// Delete survey
+app.post("/surveys/:surveyId/destroy", (req, res, next) => {
+  let surveyId = +req.params.surveyId;
+  let index = surveys.findIndex(survey => survey.id === surveyId);
+
+  if (index === -1) {
+    next(new Error("Not Found."));
+  } else {
+    surveys.splice(index, 1);
+
+    req.flash("success", "Survey deleted.");
+    res.redirect("/surveys");
+  }
+});
+
 // Error handler
 app.use((err, req, res, _next) => {
   console.log(err); // Writes more extensive information to the console log
