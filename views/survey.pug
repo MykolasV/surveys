@@ -26,21 +26,34 @@ block main
           input(type="text"
                 name="question"
                 id="question"
-                placeholder="question...")
+                placeholder="question..."
+                value=question || "")
         dt 
           label(for="type") Type
         dd 
           select(name="type" id="type")
-            option(value="closed") Closed 
-            option(value="nominal") Nominal 
-            option(value="open") Open
+            if selected === "closed"
+              option(value="closed" selected) Closed
+            else
+              option(value="closed") Closed
+
+            if selected === "nominal"
+              option(value="nominal" selected) Nominal 
+            else
+              option(value="nominal") Nominal
+
+            if selected === "open"
+              option(value="open" selected) Open
+            else
+              option(value="open") Open
         dt 
           label(for="options") Options
         dd
           input(type="text"
                 name="options"
                 id="options"
-                placeholder="option1, option2, option3...")
+                placeholder="option1, option2, option3..."
+                value=options || "")
       button(type="submit") Add
 
 block headerLinks

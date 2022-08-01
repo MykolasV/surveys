@@ -168,9 +168,12 @@ app.post("/surveys/:surveyId/questions",
         errors.array().forEach(message => req.flash("error", message.msg));
 
         res.render("survey", {
+          flash: req.flash(),
           survey,
           questions: survey.questions,
-          flash: req.flash(),
+          question: req.body.question,
+          options: req.body.options,
+          selected: req.body.type,
         });
       } else {
         survey.addQuestion(type, question, options);
