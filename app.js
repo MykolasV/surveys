@@ -94,6 +94,7 @@ app.post("/surveys",
       errors.array().forEach(message => req.flash("error", message.msg));
       res.render("new-survey", {
         surveyTitle: req.body.surveyTitle,
+        flash: req.flash(),
       });
     } else {
       surveys.push(new Survey(req.body.surveyTitle));
@@ -143,12 +144,12 @@ app.post("/surveys/:surveyId/questions",
       .custom((optionString, { req }) => {
         if (["closed", "nominal"].includes(req.body.type)) {
           let options = optionString.split(/, +|,/);
-          return options.length > 0;
+          return options.length === 0;
         } else {
           return true;
         }
       })
-      .withMessage("Please provide options in the correct format.")
+      .withMessage("Please provide options in the correct format."),
   ],
   (req, res, next) => {
     let surveyId = req.params.surveyId;
@@ -169,6 +170,7 @@ app.post("/surveys/:surveyId/questions",
         res.render("survey", {
           survey,
           questions: survey.questions,
+          flash: req.flash(),
         });
       } else {
         survey.addQuestion(type, question, options);
