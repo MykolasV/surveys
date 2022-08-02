@@ -6,7 +6,7 @@ block main
     p #{question.text}
     form.delete(action=`/surveys/${surveyId}/questions/${question.id}/destroy`
                 method="post")
-      button(type="submit") Delete
+      button(type="submit") Delete Question
 
   form(action=`/surveys/${surveyId}/questions/${question.id}` method="post")
     dl
@@ -14,10 +14,10 @@ block main
         label(for="question") Question 
       dd
         input(type="text"
-              name="text"
-              id="text"
+              name="questionText"
+              id="questionText"
               placeholder="question..."
-              value=text || question.text)
+              value=questionText || question.text)
       dt 
         label(for="type") Type
       dd 

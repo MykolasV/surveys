@@ -76,7 +76,7 @@ app.get("/surveys", (req, res) => {
   res.render("surveys", { surveys: req.session.surveys });
 });
 
-// Render new survey page
+// Render new survey form
 app.get("/surveys/new", (req, res) => {
   res.render("new-survey");
 });
@@ -218,7 +218,7 @@ app.post("/surveys/:surveyId/destroy", (req, res, next) => {
   }
 });
 
-// Edit survey title
+// Update survey title
 app.post("/surveys/:surveyId/edit",
   [
     body("surveyTitle")
@@ -260,7 +260,7 @@ app.post("/surveys/:surveyId/edit",
 
 // Render edit question form
 app.get("/surveys/:surveyId/questions/:questionId", (req, res, next) => {
-  let { surveyId, questionId } = { ... req.params };
+  let { surveyId, questionId } = req.params;
   let survey = loadSurvey(+surveyId, req.session.surveys);
   let question = survey.getQuestion(+questionId);
 
@@ -276,6 +276,59 @@ app.get("/surveys/:surveyId/questions/:questionId", (req, res, next) => {
     next(new Error("Not Found."));
   }
 });
+
+// Update question
+app.post("/surveys/:surveyId/questions/:questionId",
+  [
+    body("questionText")
+      .trim()
+      .isLength({ min: 1})
+      .withMessage("The question field is required."),
+    body("options")
+      .trim()
+      .custom((optionString, { req }) => {
+        if (["closed", "nominal"].includes(req.body.type)) {
+          let options = optionString.split(/, +|,/).filter(str => str.trim().length > 0);
+          return options.length > 0;
+        } else {
+          return true;
+        }
+      })
+      .withMessage("Please provide options in the correct format."),
+  ],
+  (req, res, next) => {
+    let { surveyId, questionId } = req.params;
+    let survey = loadSurvey(+surveyId, req.session.surveys);
+    let question = survey.getQuestion(+questionId);
+
+    if (!survey || !question) {
+      next(new Error("Not Found."));
+    } else {
+      let errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        errors.array().forEach(message => req.flash("error", message.msg));
+
+        res.render("edit-question", {
+          flash: req.flash(),
+          surveyId,
+          question,
+          questionText: req.body.questionText,
+          options: req.body.options,
+          selected: req.body.type,
+        });
+      } else {
+        let questionText = req.body.questionText;
+        let type = req.body.type;
+        let options = req.body.options.split(/, +|,/).map(option => option.trim());
+
+        question.update(type, questionText, options);
+        req.flash("success", "The question was updated.");
+        res.redirect(`/surveys/${surveyId}`);
+      }
+    }
+  }
+);
 
 // Error handler
 app.use((err, req, res, _next) => {
