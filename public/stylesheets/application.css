@@ -32,9 +32,13 @@ a {
   margin-bottom: 5px;
 }
 
-li h2, li p {
-  display: inline-block;
-  margin: 10px;
+.survey_details h2, .survey_details p {
+  display: block;
+  margin: 20px 0;
+}
+
+.survey_details h2 {
+  font-size: 28px;
 }
 
 .flash {

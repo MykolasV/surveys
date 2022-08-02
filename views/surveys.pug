@@ -8,8 +8,10 @@ block main
       each survey in surveys
         li
           a(href=`/surveys/${survey.id}`)
-            h2= survey.title
-            p #{survey.numberOfQuestions()}
+            .survey_details
+              h2= survey.title
+              p Questions: #{survey.numberOfQuestions()}
+              p Participants: #{survey.numberOfParticipants()}
 
 block headerLinks
   .actions

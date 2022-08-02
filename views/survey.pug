@@ -7,14 +7,18 @@ block main
       button(type="submit") Edit
 
   ul#questions
-    each question in questions
-      li
-        p= question.text
-        form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
-          button(type="submit") Edit
-        form.delete(action=`/surveys/${survey.id}/questions/${question.id}/destroy`
-                    method="post")
-          button(type="submit") Delete
+    if questions.length === 0
+      p There are no questions in this survey.
+      p Add a question below.
+    else
+      each question in questions
+        li
+          p= question.text
+          form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
+            button(type="submit") Edit
+          form.delete(action=`/surveys/${survey.id}/questions/${question.id}/destroy`
+                      method="post")
+            button(type="submit") Delete
 
   .add_question
     h3 Add Question
