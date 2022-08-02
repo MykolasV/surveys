@@ -3,7 +3,6 @@ const morgan = require("morgan");
 const flash = require("express-flash");
 const session = require("express-session");
 const store = require("connect-loki");
-const LokiStore = store(session);
 const { body, validationResult } = require("express-validator");
 
 const Survey = require("./lib/survey");
@@ -11,9 +10,7 @@ const Survey = require("./lib/survey");
 const app = express();
 const host = "localhost";
 const port = 3000;
-
-// Static data for initial testing
-let surveys = require("./lib/seed-data");
+const LokiStore = store(session);
 
 app.set("views", "./views");
 app.set("view engine", "pug");
@@ -45,6 +42,17 @@ app.use(session({
 
 app.use(flash());
 
+// Set up persistent session data
+app.use((req, res, next) => {
+  if ("surveys" in req.session) {
+    req.session.surveys = req.session.surveys.map(survey => Survey.makeSurvey(survey));
+  } else {
+    req.session.surveys = [];
+  }
+
+  next();
+});
+
 // Extract session info
 app.use((req, res, next) => {
   res.locals.flash = req.session.flash;
@@ -54,8 +62,8 @@ app.use((req, res, next) => {
 
 // Find a survey with the indicated ID. Returns `undefined` if not found.
 // Note that `id` must be numeric.
-const loadSurvey = id => {
-  return surveys.find(survey => survey.id === id);
+const loadSurvey = (surveyId, surveys) => {
+  return surveys.find(survey => survey.id === surveyId);
 }
 
 // Redirect start page
@@ -65,7 +73,7 @@ app.get("/", (req, res) => {
 
 // Render the list of surveys
 app.get("/surveys", (req, res) => {
-  res.render("surveys", { surveys });
+  res.render("surveys", { surveys: req.session.surveys });
 });
 
 // Render new survey page
@@ -82,8 +90,8 @@ app.post("/surveys",
     .withMessage("The survey title is required.")
     .isLength({ max: 100 })
     .withMessage("Survey title must be between 1 and 100 characters.")
-    .custom(title => {
-      let duplicate = surveys.find(survey => survey.title === title);
+    .custom((title, { req }) => {
+      let duplicate = req.session.surveys.find(survey => survey.title === title);
       return duplicate === undefined;
     })
     .withMessage("Survey title must be unique."),
@@ -97,7 +105,7 @@ app.post("/surveys",
         flash: req.flash(),
       });
     } else {
-      surveys.push(new Survey(req.body.surveyTitle));
+      req.session.surveys.push(new Survey(req.body.surveyTitle));
       req.flash("success", "The survey has been created.");
       res.redirect("/surveys");
     }
@@ -107,7 +115,7 @@ app.post("/surveys",
 // Render individual survey and its questions
 app.get("/surveys/:surveyId", (req, res, next) => {
   let surveyId = req.params.surveyId;
-  let survey = loadSurvey(+surveyId);
+  let survey = loadSurvey(+surveyId, req.session.surveys);
 
   if (survey === undefined) {
     next(new Error("Not found."));
@@ -122,7 +130,7 @@ app.get("/surveys/:surveyId", (req, res, next) => {
 // Delete a question from a survey
 app.post("/surveys/:surveyId/questions/:questionId/destroy", (req, res, next) => {
   let { surveyId, questionId } = req.params;
-  let survey = loadSurvey(+surveyId);
+  let survey = loadSurvey(+surveyId, req.session.surveys);
 
   if (survey && survey.removeQuestion(+questionId)) {
     req.flash("success", "The question was deleted.");
@@ -153,7 +161,7 @@ app.post("/surveys/:surveyId/questions",
   ],
   (req, res, next) => {
     let surveyId = req.params.surveyId;
-    let survey = loadSurvey(+surveyId);
+    let survey = loadSurvey(+surveyId, req.session.surveys);
 
     let question = req.body.question;
     let type = req.body.type;
@@ -186,7 +194,7 @@ app.post("/surveys/:surveyId/questions",
 // Render edit survey form
 app.get("/surveys/:surveyId/edit", (req, res, next) => {
   let surveyId = req.params.surveyId;
-  let survey = loadSurvey(+surveyId);
+  let survey = loadSurvey(+surveyId, req.session.surveys);
 
   if (!survey) {
     next(new Error("Not Found"));
@@ -198,12 +206,12 @@ app.get("/surveys/:surveyId/edit", (req, res, next) => {
 // Delete survey
 app.post("/surveys/:surveyId/destroy", (req, res, next) => {
   let surveyId = +req.params.surveyId;
-  let index = surveys.findIndex(survey => survey.id === surveyId);
+  let index = req.session.surveys.findIndex(survey => survey.id === surveyId);
 
   if (index === -1) {
     next(new Error("Not Found."));
   } else {
-    surveys.splice(index, 1);
+    req.session.surveys.splice(index, 1);
 
     req.flash("success", "Survey deleted.");
     res.redirect("/surveys");
@@ -219,15 +227,15 @@ app.post("/surveys/:surveyId/edit",
       .withMessage("The survey title is required.")
       .isLength({ max: 100 })
       .withMessage("Survey title must be between 1 and 100 characters.")
-      .custom(title => {
-        let duplicate = surveys.find(survey => survey.title === title);
+      .custom((title, { req }) => {
+        let duplicate = req.session.surveys.find(survey => survey.title === title);
         return duplicate === undefined;
       })
       .withMessage("Survey title must be unique"),
   ],
   (req, res, next) => {
     let surveyId = req.params.surveyId;
-    let survey = loadSurvey(+surveyId);
+    let survey = loadSurvey(+surveyId, req.session.surveys);
 
     if (!survey) {
       next(new Error("Not Found."));
