@@ -61,6 +61,10 @@ a {
   margin-bottom: 5px;
 }
 
+#questions li p {
+  display: inline-block;
+}
+
 form.edit,
 form.delete {
   display: inline-block;
