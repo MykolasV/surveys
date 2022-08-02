@@ -143,7 +143,7 @@ app.post("/surveys/:surveyId/questions/:questionId/destroy", (req, res, next) =>
 // Add a new question to a survey
 app.post("/surveys/:surveyId/questions",
   [
-    body("question")
+    body("questionText")
       .trim()
       .isLength({ min: 1})
       .withMessage("The question field is required."),
@@ -163,7 +163,7 @@ app.post("/surveys/:surveyId/questions",
     let surveyId = req.params.surveyId;
     let survey = loadSurvey(+surveyId, req.session.surveys);
 
-    let question = req.body.question;
+    let questionText = req.body.questionText;
     let type = req.body.type;
     let options = req.body.options.split(/, +|,/);
 
@@ -179,12 +179,12 @@ app.post("/surveys/:surveyId/questions",
           flash: req.flash(),
           survey,
           questions: survey.questions,
-          question: req.body.question,
+          questionText: req.body.questionText,
           options: req.body.options,
           selected: req.body.type,
         });
       } else {
-        survey.addQuestion(type, question, options);
+        survey.addQuestion(type, questionText, options);
         req.flash("success", "The question was added.");
         res.redirect(`/surveys/${surveyId}`);
       }
