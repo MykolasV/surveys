@@ -16,9 +16,6 @@ block main
           p= question.text
           form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
             button(type="submit") Edit
-          form.delete(action=`/surveys/${survey.id}/questions/${question.id}/destroy`
-                      method="post")
-            button(type="submit") Delete
 
   .add_question
     h3 Add Question

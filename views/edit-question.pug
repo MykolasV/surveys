@@ -1,0 +1,50 @@
+extends layout 
+
+block main
+  header
+    h2 Edit Question:
+    p #{question.text}
+    form.delete(action=`/surveys/${surveyId}/questions/${question.id}/destroy`
+                method="post")
+      button(type="submit") Delete
+
+  form(action=`/surveys/${surveyId}/questions/${question.id}` method="post")
+    dl
+      dt
+        label(for="question") Question 
+      dd
+        input(type="text"
+              name="text"
+              id="text"
+              placeholder="question..."
+              value=text || question.text)
+      dt 
+        label(for="type") Type
+      dd 
+        select(name="type" id="type")
+          if selected === "closed"
+            option(value="closed" selected) Closed
+          else
+            option(value="closed") Closed
+
+          if selected === "nominal"
+            option(value="nominal" selected) Nominal 
+          else
+            option(value="nominal") Nominal
+
+          if selected === "open"
+            option(value="open" selected) Open
+          else
+            option(value="open") Open
+      dt 
+        label(for="options") Options
+      dd
+        input(type="text"
+              name="options"
+              id="options"
+              placeholder="option1, option2, option3..."
+              value=options || question.options.map(option => option.value).join(', '))
+    
+      fieldset.actions
+        input(type="submit" value="Save")
+        a(href=`/surveys/${surveyId}`) Cancel
