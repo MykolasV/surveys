@@ -17,22 +17,22 @@ block main
               name="questionText"
               id="questionText"
               placeholder="question..."
-              value=questionText || question.text)
-      dt 
+              value=questionText)
+      dt
         label(for="type") Type
       dd 
         select(name="type" id="type")
-          if selected === "closed"
+          if selectedType === "closed"
             option(value="closed" selected) Closed
           else
             option(value="closed") Closed
 
-          if selected === "nominal"
+          if selectedType === "nominal"
             option(value="nominal" selected) Nominal 
           else
             option(value="nominal") Nominal
 
-          if selected === "open"
+          if selectedType === "open"
             option(value="open" selected) Open
           else
             option(value="open") Open
@@ -43,7 +43,7 @@ block main
               name="options"
               id="options"
               placeholder="option1, option2, option3..."
-              value=options || question.options.map(option => option.value).join(', '))
+              value=options)
     
       fieldset.actions
         input(type="submit" value="Save")

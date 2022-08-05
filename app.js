@@ -262,19 +262,18 @@ app.post("/surveys/:surveyId/edit",
 // Render edit question form
 app.get("/surveys/:surveyId/questions/:questionId", (req, res, next) => {
   let { surveyId, questionId } = req.params;
-  let survey = loadSurvey(+surveyId, req.session.surveys);
-  let question = survey.getQuestion(+questionId);
+  let question = res.locals.store.loadQuestion(+surveyId, +questionId);
 
-  if (survey && question) {
+  if (!question) {
+    next(new Error("Not Found."));
+  } else {
     res.render("edit-question", {
       surveyId,
       question,
-      text: req.params.text,
-      selected: req.params.type || question.type,
-      options: req.params.options,
+      questionText: req.params.text || question.text,
+      selectedType: req.params.type || question.type,
+      options: req.params.options || question.options.map(option => option.value).join(', '),
     });
-  } else {
-    next(new Error("Not Found."));
   }
 });
 
