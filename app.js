@@ -4,6 +4,7 @@ const flash = require("express-flash");
 const session = require("express-session");
 const store = require("connect-loki");
 const { body, validationResult } = require("express-validator");
+const SessionPersistence = require("./lib/session-persistence");
 
 const Survey = require("./lib/survey");
 
@@ -42,14 +43,9 @@ app.use(session({
 
 app.use(flash());
 
-// Set up persistent session data
+// Create a new datastore
 app.use((req, res, next) => {
-  if ("surveys" in req.session) {
-    req.session.surveys = req.session.surveys.map(survey => Survey.makeSurvey(survey));
-  } else {
-    req.session.surveys = [];
-  }
-
+  res.locals.store = new SessionPersistence(req.session);
   next();
 });
 
@@ -60,12 +56,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Find a survey with the indicated ID. Returns `undefined` if not found.
-// Note that `id` must be numeric.
-const loadSurvey = (surveyId, surveys) => {
-  return surveys.find(survey => survey.id === surveyId);
-}
-
 // Redirect start page
 app.get("/", (req, res) => {
   res.redirect("/surveys");
@@ -73,7 +63,18 @@ app.get("/", (req, res) => {
 
 // Render the list of surveys
 app.get("/surveys", (req, res) => {
-  res.render("surveys", { surveys: req.session.surveys });
+  let store = res.locals.store;
+  let surveys = store.allSurveys();
+
+  let surveysInfo = surveys.map(survey => ({
+    countAllQuestions: survey.questions.length,
+    countAllParticipants: survey.participants.length,
+  }));
+
+  res.render("surveys", {
+    surveys,
+    surveysInfo,
+  });
 });
 
 // Render new survey form
@@ -115,7 +116,7 @@ app.post("/surveys",
 // Render individual survey and its questions
 app.get("/surveys/:surveyId", (req, res, next) => {
   let surveyId = req.params.surveyId;
-  let survey = loadSurvey(+surveyId, req.session.surveys);
+  let survey = res.locals.store.loadSurvey(+surveyId);
 
   if (survey === undefined) {
     next(new Error("Not found."));

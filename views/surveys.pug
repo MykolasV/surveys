@@ -5,13 +5,14 @@ block main
     p#no_list You don't have any surveys. Why not create one?
   else
     ul#surveys_list
-      each survey in surveys
+      each survey, surveyIndex in surveys
+        - let surveyInfo = surveysInfo[surveyIndex];
         li
           a(href=`/surveys/${survey.id}`)
             .survey_details
               h2= survey.title
-              p Questions: #{survey.numberOfQuestions()}
-              p Participants: #{survey.numberOfParticipants()}
+              p Questions: #{surveyInfo.countAllQuestions}
+              p Participants: #{surveyInfo.countAllParticipants}
 
 block headerLinks
   .actions
