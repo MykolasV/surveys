@@ -131,13 +131,13 @@ app.get("/surveys/:surveyId", (req, res, next) => {
 // Delete a question from a survey
 app.post("/surveys/:surveyId/questions/:questionId/destroy", (req, res, next) => {
   let { surveyId, questionId } = req.params;
-  let survey = loadSurvey(+surveyId, req.session.surveys);
+  let deleted = res.locals.store.deleteQuestion(+surveyId, +questionId);
 
-  if (survey && survey.removeQuestion(+questionId)) {
+  if (!deleted) {
+    next(new Error("Not found."));
+  } else {
     req.flash("success", "The question was deleted.");
     res.redirect(`/surveys/${surveyId}`);
-  } else {
-    next(new Error("Not found."));
   }
 });
 
