@@ -195,7 +195,7 @@ app.post("/surveys/:surveyId/questions",
 // Render edit survey form
 app.get("/surveys/:surveyId/edit", (req, res, next) => {
   let surveyId = req.params.surveyId;
-  let survey = loadSurvey(+surveyId, req.session.surveys);
+  let survey = res.locals.store.loadSurvey(+surveyId);
 
   if (!survey) {
     next(new Error("Not Found"));
@@ -206,14 +206,24 @@ app.get("/surveys/:surveyId/edit", (req, res, next) => {
 
 // Delete survey
 app.post("/surveys/:surveyId/destroy", (req, res, next) => {
-  let surveyId = +req.params.surveyId;
-  let index = req.session.surveys.findIndex(survey => survey.id === surveyId);
+  // let surveyId = +req.params.surveyId;
+  // let index = req.session.surveys.findIndex(survey => survey.id === surveyId);
 
-  if (index === -1) {
+  // if (index === -1) {
+  //   next(new Error("Not Found."));
+  // } else {
+  //   req.session.surveys.splice(index, 1);
+
+  //   req.flash("success", "Survey deleted.");
+  //   res.redirect("/surveys");
+  // }
+
+  let surveyId = req.params.surveyId;
+  let deleted = res.locals.store.deleteSurvey(+surveyId);
+
+  if (!deleted) {
     next(new Error("Not Found."));
   } else {
-    req.session.surveys.splice(index, 1);
-
     req.flash("success", "Survey deleted.");
     res.redirect("/surveys");
   }
