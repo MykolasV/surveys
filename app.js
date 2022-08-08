@@ -172,7 +172,7 @@ app.post("/surveys/:surveyId/questions",
     let survey = res.locals.store.loadSurvey(+surveyId);
 
     let questionText = req.body.questionText;
-    let type = req.body.type;
+    let type = req.body.selectedType;
     let options = req.body.options.split(/, +|,/);
 
     if (!survey) {
@@ -188,8 +188,8 @@ app.post("/surveys/:surveyId/questions",
           survey,
           questions: survey.questions,
           questionText: req.body.questionText,
-          selectedType: req.body.type,
-          options: req.body.options,
+          selectedType: req.body.selectedType,
+          options: options.join(', '),
         });
       } else {
         let created = res.locals.store.createQuestion(+surveyId, questionText, type, options);
