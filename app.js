@@ -314,10 +314,9 @@ app.post("/surveys/:surveyId/questions/:questionId",
   ],
   (req, res, next) => {
     let { surveyId, questionId } = req.params;
-    let survey = loadSurvey(+surveyId, req.session.surveys);
-    let question = survey.getQuestion(+questionId);
+    let question = res.locals.store.loadQuestion(+surveyId, +questionId);
 
-    if (!survey || !question) {
+    if (!question) {
       next(new Error("Not Found."));
     } else {
       let errors = validationResult(req);
@@ -329,18 +328,21 @@ app.post("/surveys/:surveyId/questions/:questionId",
           flash: req.flash(),
           surveyId,
           question,
-          questionText: req.body.questionText,
-          options: req.body.options,
-          selected: req.body.type,
+          questionText: req.body.questionText || question.text,
+          selectedType: req.body.type || question.type,
+          options: req.body.options || question.options.map(option => option.value).join(', '),
         });
       } else {
         let questionText = req.body.questionText;
         let type = req.body.type;
         let options = req.body.options.split(/, +|,/).map(option => option.trim());
 
-        question.update(type, questionText, options);
-        req.flash("success", "The question was updated.");
-        res.redirect(`/surveys/${surveyId}`);
+        if (!res.locals.store.updateQuestion(+surveyId, +questionId, questionText, type, options)) {
+          next(new Error("Not Found"));
+        } else {
+          req.flash("success", "The question was updated.");
+          res.redirect(`/surveys/${surveyId}`);
+        }
       }
     }
   }
