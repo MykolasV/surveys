@@ -91,11 +91,11 @@ app.post("/surveys",
     .withMessage("The survey title is required.")
     .isLength({ max: 100 })
     .withMessage("Survey title must be between 1 and 100 characters.")
-    .custom((title, { req }) => {
-      let duplicate = req.session.surveys.find(survey => survey.title === title);
-      return duplicate === undefined;
-    })
-    .withMessage("Survey title must be unique."),
+    // .custom((title, { req }) => {
+    //   let duplicate = req.session.surveys.find(survey => survey.title === title);
+    //   return duplicate === undefined;
+    // })
+    // .withMessage("Survey title must be unique."),
   ],
   (req, res) => {
     let errors = validationResult(req);
@@ -231,30 +231,30 @@ app.post("/surveys/:surveyId/edit",
       .withMessage("The survey title is required.")
       .isLength({ max: 100 })
       .withMessage("Survey title must be between 1 and 100 characters.")
-      .custom((title, { req }) => {
-        let duplicate = req.session.surveys.find(survey => survey.title === title);
-        return duplicate === undefined;
-      })
-      .withMessage("Survey title must be unique"),
   ],
   (req, res, next) => {
     let surveyId = req.params.surveyId;
-    let survey = loadSurvey(+surveyId, req.session.surveys);
+    let survey = res.locals.store.loadSurvey(+surveyId);
 
     if (!survey) {
       next(new Error("Not Found."));
     } else {
+      let surveyTitle = req.body.surveyTitle;
       let errors = validationResult(req);
+
       if (!errors.isEmpty()) {
         errors.array().forEach(message => req.flash("error", message.msg));
 
         res.render("edit-survey", {
           flash: req.flash(),
-          surveyTitle: req.body.surveyTitle,
+          surveyTitle,
           survey,
         });
       } else {
-        survey.changeTitle(req.body.surveyTitle);
+        if (!res.locals.store.changeSurveyTitle(+surveyId, surveyTitle)) {
+          next(new Error("Not Found."));
+        }
+
         req.flash("success", "Survey title updated.");
         res.redirect(`/surveys/${surveyId}`);
       }
