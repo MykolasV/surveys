@@ -162,7 +162,7 @@ app.post("/surveys/:surveyId/questions",
   ],
   (req, res, next) => {
     let surveyId = req.params.surveyId;
-    let survey = loadSurvey(+surveyId, req.session.surveys);
+    let survey = res.locals.store.loadSurvey(+surveyId);
 
     let questionText = req.body.questionText;
     let type = req.body.type;
@@ -181,13 +181,18 @@ app.post("/surveys/:surveyId/questions",
           survey,
           questions: survey.questions,
           questionText: req.body.questionText,
+          selectedType: req.body.type,
           options: req.body.options,
-          selected: req.body.type,
         });
       } else {
-        survey.addQuestion(type, questionText, options);
-        req.flash("success", "The question was added.");
-        res.redirect(`/surveys/${surveyId}`);
+        let created = res.locals.store.createQuestion(+surveyId, questionText, type, options);
+        
+        if (!created) {
+          next(new Error("Not Found."));
+        } else {
+          req.flash("success", "The question was added.");
+          res.redirect(`/surveys/${surveyId}`);
+        }
       }
     }
 });

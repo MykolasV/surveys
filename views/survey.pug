@@ -33,17 +33,17 @@ block main
           label(for="type") Type
         dd 
           select(name="type" id="type")
-            if selected === "closed"
+            if selectedType === "closed"
               option(value="closed" selected) Closed
             else
               option(value="closed") Closed
 
-            if selected === "nominal"
+            if selectedType === "nominal"
               option(value="nominal" selected) Nominal 
             else
               option(value="nominal") Nominal
 
-            if selected === "open"
+            if selectedType === "open"
               option(value="open" selected) Open
             else
               option(value="open") Open
