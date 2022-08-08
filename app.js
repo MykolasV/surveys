@@ -91,27 +91,34 @@ app.post("/surveys",
     .withMessage("The survey title is required.")
     .isLength({ max: 100 })
     .withMessage("Survey title must be between 1 and 100 characters.")
-    // .custom((title, { req }) => {
-    //   let duplicate = req.session.surveys.find(survey => survey.title === title);
-    //   return duplicate === undefined;
-    // })
-    // .withMessage("Survey title must be unique."),
   ],
-  (req, res) => {
+  (req, res, next) => {
+    let store = res.locals.store;
+    let surveyTitle = req.body.surveyTitle;
+
+    const rerenderNewSurvey = () => {
+      res.render("new-survey", {
+        flash: req.flash(),
+        surveyTitle,
+      });
+    };
+
     let errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       errors.array().forEach(message => req.flash("error", message.msg));
-      res.render("new-survey", {
-        surveyTitle: req.body.surveyTitle,
-        flash: req.flash(),
-      });
+      rerenderNewSurvey();
+    } else if (store.existsSurveyTitle(surveyTitle)) {
+      req.flash("error", "The survey title must be unique.");
+      rerenderNewSurvey();
+    } else if (!store.createSurvey(surveyTitle)) {
+      next(new Error("Not Found."));
     } else {
-      req.session.surveys.push(new Survey(req.body.surveyTitle));
       req.flash("success", "The survey has been created.");
       res.redirect("/surveys");
     }
   }
-)
+);
 
 // Render individual survey and its questions
 app.get("/surveys/:surveyId", (req, res, next) => {
@@ -233,31 +240,37 @@ app.post("/surveys/:surveyId/edit",
       .withMessage("Survey title must be between 1 and 100 characters.")
   ],
   (req, res, next) => {
+    let store = res.locals.store;
     let surveyId = req.params.surveyId;
-    let survey = res.locals.store.loadSurvey(+surveyId);
+    let surveyTitle = req.body.surveyTitle;
 
-    if (!survey) {
-      next(new Error("Not Found."));
-    } else {
-      let surveyTitle = req.body.surveyTitle;
-      let errors = validationResult(req);
+    const rerenderEditSurvey = () => {
+      let survey = store.loadSurvey(+surveyId);
 
-      if (!errors.isEmpty()) {
-        errors.array().forEach(message => req.flash("error", message.msg));
-
+      if (!survey) {
+        next(new Error("Not Found."));
+      } else {
         res.render("edit-survey", {
           flash: req.flash(),
           surveyTitle,
           survey,
         });
-      } else {
-        if (!res.locals.store.changeSurveyTitle(+surveyId, surveyTitle)) {
-          next(new Error("Not Found."));
-        }
-
-        req.flash("success", "Survey title updated.");
-        res.redirect(`/surveys/${surveyId}`);
       }
+    };
+
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      errors.array().forEach(message => req.flash("error", message.msg));
+      rerenderEditSurvey();
+    } else if (store.existsSurveyTitle(surveyTitle)) {
+      req.flash("error", "The survey title must be unique.");
+      rerenderEditSurvey();
+    } else if (!store.changeSurveyTitle(+surveyId, surveyTitle)) {
+      next(new Error("Not Found."));
+    } else {
+      req.flash("success", "Survey title updated.");
+      res.redirect(`/surveys/${surveyId}`);
     }
   }
 );
