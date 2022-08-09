@@ -6,8 +6,6 @@ const store = require("connect-loki");
 const { body, validationResult } = require("express-validator");
 const SessionPersistence = require("./lib/session-persistence");
 
-const Survey = require("./lib/survey");
-
 const app = express();
 const host = "localhost";
 const port = 3000;
