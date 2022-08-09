@@ -170,7 +170,7 @@ app.post("/surveys/:surveyId/questions",
     let survey = res.locals.store.loadSurvey(+surveyId);
 
     let questionText = req.body.questionText;
-    let type = req.body.selectedType;
+    let type = req.body.type;
     let options = req.body.options.split(/, +|,/);
 
     if (!survey) {
@@ -186,12 +186,12 @@ app.post("/surveys/:surveyId/questions",
           survey,
           questions: survey.questions,
           questionText: req.body.questionText,
-          selectedType: req.body.selectedType,
+          selectedType: req.body.type,
           options: options.join(', '),
         });
       } else {
         let created = res.locals.store.createQuestion(+surveyId, questionText, type, options);
-        
+
         if (!created) {
           next(new Error("Not Found."));
         } else {
@@ -284,9 +284,9 @@ app.get("/surveys/:surveyId/questions/:questionId", (req, res, next) => {
     res.render("edit-question", {
       surveyId,
       question,
-      questionText: req.params.text || question.text,
-      selectedType: req.params.type || question.type,
-      options: req.params.options || question.options.map(option => option.value).join(', '),
+      questionText: question.text,
+      selectedType: question.type,
+      options: question.options.map(option => option.value).join(', '),
     });
   }
 });
