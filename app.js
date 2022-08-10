@@ -60,19 +60,23 @@ app.get("/", (req, res) => {
 });
 
 // Render the list of surveys
-app.get("/surveys", (req, res) => {
-  let store = res.locals.store;
-  let surveys = store.allSurveys();
-
-  let surveysInfo = surveys.map(survey => ({
-    countAllQuestions: survey.questions.length,
-    countAllParticipants: survey.participants.length,
-  }));
-
-  res.render("surveys", {
-    surveys,
-    surveysInfo,
-  });
+app.get("/surveys", async (req, res, next) => {
+  try {
+    let store = res.locals.store;
+    let surveys = await store.allSurveys();
+  
+    let surveysInfo = surveys.map(survey => ({
+      countAllQuestions: survey.questions.length,
+      countAllParticipants: survey.participants.length,
+    }));
+  
+    res.render("surveys", {
+      surveys,
+      surveysInfo,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Render new survey form
@@ -119,17 +123,21 @@ app.post("/surveys",
 );
 
 // Render individual survey and its questions
-app.get("/surveys/:surveyId", (req, res, next) => {
-  let surveyId = req.params.surveyId;
-  let survey = res.locals.store.loadSurvey(+surveyId);
-
-  if (survey === undefined) {
-    next(new Error("Not found."));
-  } else {
-    res.render("survey", { 
-      survey,
-      questions: survey.questions,
-    });
+app.get("/surveys/:surveyId", async (req, res, next) => {
+  try {
+    let surveyId = req.params.surveyId;
+    let survey = await res.locals.store.loadSurvey(+surveyId);
+  
+    if (survey === undefined) {
+      next(new Error("Not found."));
+    } else {
+      res.render("survey", { 
+        survey,
+        questions: survey.questions,
+      });
+    }
+  } catch(error) {
+    next(error);
   }
 });
 

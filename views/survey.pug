@@ -13,7 +13,7 @@ block main
     else
       each question in questions
         li
-          p= question.text
+          p= question.question
           form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
             button(type="submit") Edit
 
