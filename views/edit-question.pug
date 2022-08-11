@@ -3,12 +3,12 @@ extends layout
 block main
   header
     h2 Edit Question:
-    p #{question.text}
-    form.delete(action=`/surveys/${surveyId}/questions/${question.id}/destroy`
+    p #{question}
+    form.delete(action=`/surveys/${surveyId}/questions/${questionId}/destroy`
                 method="post")
       button(type="submit") Delete Question
 
-  form(action=`/surveys/${surveyId}/questions/${question.id}` method="post")
+  form(action=`/surveys/${surveyId}/questions/${questionId}` method="post")
     dl
       dt
         label(for="question") Question 
@@ -19,9 +19,9 @@ block main
               placeholder="question..."
               value=questionText)
       dt
-        label(for="type") Type
+        label(for="questionType") Type
       dd 
-        select(name="type" id="type")
+        select(name="questionType" id="questionType")
           if selectedType === "closed"
             option(value="closed" selected) Closed
           else

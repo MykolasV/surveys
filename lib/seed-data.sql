@@ -3,7 +3,7 @@ INSERT INTO surveys (title)
          ('More Questions'),
          ('Even More Questions');
 
-INSERT INTO questions (question_type, question, survey_id)
+INSERT INTO questions (question_type, question_text, survey_id)
   VALUES ('closed', 'The earth is flat. True or False?', 1),
          ('nominal', 'What are your favorite flavours of ice cream?', 1),
          ('open', 'How old are you?', 1),

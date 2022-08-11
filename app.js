@@ -92,7 +92,7 @@ app.post("/surveys",
     .isLength({ max: 100 })
     .withMessage("Survey title must be between 1 and 100 characters.")
   ],
-  (req, res, next) => {
+  catchError(async (req, res) => {
     let store = res.locals.store;
     let surveyTitle = req.body.surveyTitle;
 
@@ -108,16 +108,16 @@ app.post("/surveys",
     if (!errors.isEmpty()) {
       errors.array().forEach(message => req.flash("error", message.msg));
       rerenderNewSurvey();
-    } else if (store.existsSurveyTitle(surveyTitle)) {
+    } else if (await store.existsSurveyTitle(surveyTitle)) {
       req.flash("error", "The survey title must be unique.");
       rerenderNewSurvey();
-    } else if (!store.createSurvey(surveyTitle)) {
-      next(new Error("Not Found."));
+    } else if (!(await store.createSurvey(surveyTitle))) {
+      throw new Error("Not Found.");
     } else {
       req.flash("success", "The survey has been created.");
       res.redirect("/surveys");
     }
-  }
+  })
 );
 
 // Render individual survey and its questions
@@ -134,19 +134,6 @@ app.get("/surveys/:surveyId",
     });
   })
 );
-
-// Delete a question from a survey
-app.post("/surveys/:surveyId/questions/:questionId/destroy", (req, res, next) => {
-  let { surveyId, questionId } = req.params;
-  let deleted = res.locals.store.deleteQuestion(+surveyId, +questionId);
-
-  if (!deleted) {
-    next(new Error("Not found."));
-  } else {
-    req.flash("success", "The question was deleted.");
-    res.redirect(`/surveys/${surveyId}`);
-  }
-});
 
 // Add a new question to a survey
 app.post("/surveys/:surveyId/questions",
@@ -167,16 +154,16 @@ app.post("/surveys/:surveyId/questions",
       })
       .withMessage("Please provide options in the correct format."),
   ],
-  (req, res, next) => {
+  catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
-    let survey = res.locals.store.loadSurvey(+surveyId);
+    let survey = await res.locals.store.loadSurvey(+surveyId);
 
     let questionText = req.body.questionText;
-    let type = req.body.type;
+    let questionType = req.body.questionType;
     let options = req.body.options.split(/, +|,/);
 
     if (!survey) {
-      next(new Error("Not Found."));
+      throw new Error("Not Found.");
     } else {
       let errors = validationResult(req);
 
@@ -187,111 +174,56 @@ app.post("/surveys/:surveyId/questions",
           flash: req.flash(),
           survey,
           questions: survey.questions,
-          questionText: req.body.questionText,
-          selectedType: req.body.type,
+          questionText,
+          selectedType: questionType,
           options: options.join(', '),
         });
       } else {
-        let created = res.locals.store.createQuestion(+surveyId, questionText, type, options);
+        let created = await res.locals.store.createQuestion(+surveyId, questionText, questionType, options);
+        if (!created) throw new Error("Not Found.");
 
-        if (!created) {
-          next(new Error("Not Found."));
-        } else {
-          req.flash("success", "The question was added.");
-          res.redirect(`/surveys/${surveyId}`);
-        }
+        req.flash("success", "The question was added.");
+        res.redirect(`/surveys/${surveyId}`);
       }
     }
-});
-
-// Render edit survey form
-app.get("/surveys/:surveyId/edit", (req, res, next) => {
-  let surveyId = req.params.surveyId;
-  let survey = res.locals.store.loadSurvey(+surveyId);
-
-  if (!survey) {
-    next(new Error("Not Found"));
-  } else {
-    res.render("edit-survey", { survey });
-  }
-});
-
-// Delete survey
-app.post("/surveys/:surveyId/destroy", (req, res, next) => {
-  let surveyId = req.params.surveyId;
-  let deleted = res.locals.store.deleteSurvey(+surveyId);
-
-  if (!deleted) {
-    next(new Error("Not Found."));
-  } else {
-    req.flash("success", "Survey deleted.");
-    res.redirect("/surveys");
-  }
-});
-
-// Update survey title
-app.post("/surveys/:surveyId/edit",
-  [
-    body("surveyTitle")
-      .trim()
-      .isLength({ min: 1 })
-      .withMessage("The survey title is required.")
-      .isLength({ max: 100 })
-      .withMessage("Survey title must be between 1 and 100 characters.")
-  ],
-  (req, res, next) => {
-    let store = res.locals.store;
-    let surveyId = req.params.surveyId;
-    let surveyTitle = req.body.surveyTitle;
-
-    const rerenderEditSurvey = () => {
-      let survey = store.loadSurvey(+surveyId);
-
-      if (!survey) {
-        next(new Error("Not Found."));
-      } else {
-        res.render("edit-survey", {
-          flash: req.flash(),
-          surveyTitle,
-          survey,
-        });
-      }
-    };
-
-    let errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      errors.array().forEach(message => req.flash("error", message.msg));
-      rerenderEditSurvey();
-    } else if (store.existsSurveyTitle(surveyTitle)) {
-      req.flash("error", "The survey title must be unique.");
-      rerenderEditSurvey();
-    } else if (!store.changeSurveyTitle(+surveyId, surveyTitle)) {
-      next(new Error("Not Found."));
-    } else {
-      req.flash("success", "Survey title updated.");
-      res.redirect(`/surveys/${surveyId}`);
-    }
-  }
+  })
 );
 
 // Render edit question form
-app.get("/surveys/:surveyId/questions/:questionId", (req, res, next) => {
-  let { surveyId, questionId } = req.params;
-  let question = res.locals.store.loadQuestion(+surveyId, +questionId);
+app.get("/surveys/:surveyId/questions/:questionId",
+  catchError(async (req, res) => {
+    let { surveyId, questionId } = req.params;
+    let question = await res.locals.store.loadQuestion(+surveyId, +questionId);
+    let options = await res.locals.store.loadOptions(+questionId);
 
-  if (!question) {
-    next(new Error("Not Found."));
-  } else {
-    res.render("edit-question", {
-      surveyId,
-      question,
-      questionText: question.text,
-      selectedType: question.type,
-      options: question.options.map(option => option.value).join(', '),
-    });
-  }
-});
+    options = options.map(option => option.option_value).join(', ');
+
+    if (!question) {
+      throw new Error("Not Found.");
+    } else {
+      res.render("edit-question", {
+        surveyId,
+        questionId,
+        question: question.question_text,
+        questionText: question.question_text,
+        selectedType: question.question_type,
+        options,
+      });
+    }
+  })
+);
+
+// Delete a question from a survey
+app.post("/surveys/:surveyId/questions/:questionId/destroy",
+  catchError(async (req, res) => {
+    let { surveyId, questionId } = req.params;
+    let deleted = await res.locals.store.deleteQuestion(+surveyId, +questionId);
+    if (!deleted) throw new Error("Not found.");
+
+    req.flash("success", "The question was deleted.");
+    res.redirect(`/surveys/${surveyId}`);
+  })
+);
 
 // Update question
 app.post("/surveys/:surveyId/questions/:questionId",
@@ -312,12 +244,15 @@ app.post("/surveys/:surveyId/questions/:questionId",
       })
       .withMessage("Please provide options in the correct format."),
   ],
-  (req, res, next) => {
+  catchError(async (req, res) => {
     let { surveyId, questionId } = req.params;
-    let question = res.locals.store.loadQuestion(+surveyId, +questionId);
+    let question = await res.locals.store.loadQuestion(+surveyId, +questionId);
+    let options = await res.locals.store.loadOptions(+questionId);
+
+    options = options.map(option => option.option_value).join(', ');
 
     if (!question) {
-      next(new Error("Not Found."));
+      throw new Error("Not Found.");
     } else {
       let errors = validationResult(req);
 
@@ -327,25 +262,96 @@ app.post("/surveys/:surveyId/questions/:questionId",
         res.render("edit-question", {
           flash: req.flash(),
           surveyId,
-          question,
-          questionText: req.body.questionText || question.text,
-          selectedType: req.body.type || question.type,
-          options: req.body.options || question.options.map(option => option.value).join(', '),
+          questionId,
+          question: question.question_text,
+          questionText: req.body.questionText || question.question_text,
+          selectedType: req.body.questionType || question.question_type,
+          options: req.body.options || options,
         });
       } else {
         let questionText = req.body.questionText;
-        let type = req.body.type;
+        let questionType = req.body.questionType;
         let options = req.body.options.split(/, +|,/).map(option => option.trim());
 
-        if (!res.locals.store.updateQuestion(+surveyId, +questionId, questionText, type, options)) {
-          next(new Error("Not Found"));
+        let updated = await res.locals.store.updateQuestion(+surveyId, +questionId, questionText, questionType, options);
+        if (!updated) {
+          throw new Error("Not Found");
         } else {
           req.flash("success", "The question was updated.");
           res.redirect(`/surveys/${surveyId}`);
         }
       }
     }
-  }
+  })
+);
+
+// Render edit survey form
+app.get("/surveys/:surveyId/edit",
+  catchError(async (req, res) => {
+    let surveyId = req.params.surveyId;
+    let survey = await res.locals.store.loadSurvey(+surveyId);
+
+    if (!survey) throw new Error("Not Found");
+
+    res.render("edit-survey", { survey });
+  })
+);
+
+// Delete survey
+app.post("/surveys/:surveyId/destroy",
+  catchError(async (req, res) => {
+    let surveyId = req.params.surveyId;
+    let deleted = await res.locals.store.deleteSurvey(+surveyId);
+
+    if (!deleted) throw new Error("Not Found.");
+
+    req.flash("success", "Survey deleted.");
+    res.redirect("/surveys");
+  })
+);
+
+// Update survey title
+app.post("/surveys/:surveyId/edit",
+  [
+    body("surveyTitle")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("The survey title is required.")
+      .isLength({ max: 100 })
+      .withMessage("Survey title must be between 1 and 100 characters.")
+  ],
+  catchError(async (req, res) => {
+    let store = res.locals.store;
+    let surveyId = req.params.surveyId;
+    let surveyTitle = req.body.surveyTitle;
+
+    const rerenderEditSurvey = async () => {
+      let survey = await store.loadSurvey(+surveyId);
+
+      if (!survey) throw new Error("Not Found.");
+
+      res.render("edit-survey", {
+        flash: req.flash(),
+        surveyTitle,
+        survey,
+      });
+    };
+
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      errors.array().forEach(message => req.flash("error", message.msg));
+      await rerenderEditSurvey();
+    } else if (await store.existsSurveyTitle(surveyTitle)) {
+      req.flash("error", "The survey title must be unique.");
+      await rerenderEditSurvey();
+    } else if (!(await store.changeSurveyTitle(+surveyId, surveyTitle))) {
+      throw new Error("Not Found.");
+    } else {
+      req.flash("success", "Survey title updated.");
+      res.redirect(`/surveys/${surveyId}`);
+    }
+  })
 );
 
 // Error handler

@@ -9,7 +9,7 @@ CREATE TABLE surveys (
 CREATE TABLE questions (
   id serial PRIMARY KEY,
   question_type text NOT NULL,
-  question text NOT NULL,
+  question_text text NOT NULL,
   survey_id integer NOT NULL REFERENCES surveys (id) ON DELETE CASCADE,
   CONSTRAINT valid_question_type CHECK (question_type IN ('closed', 'nominal', 'open'))
 );

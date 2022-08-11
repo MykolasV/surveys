@@ -11,10 +11,10 @@ block main
       p There are no questions in this survey.
       p Add a question below.
     else
-      each questionData in questions
+      each question in questions
         li
-          p= questionData.question
-          form.edit(action=`/surveys/${survey.id}/questions/${questionData.id}` method="get")
+          p= question.question_text
+          form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
             button(type="submit") Edit
 
   .add_question
@@ -32,7 +32,7 @@ block main
         dt 
           label(for="type") Type
         dd 
-          select(name="type" id="type")
+          select(name="questionType" id="questionType")
             if selectedType === "closed"
               option(value="closed" selected) Closed
             else
