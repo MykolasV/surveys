@@ -11,10 +11,10 @@ block main
       p There are no questions in this survey.
       p Add a question below.
     else
-      each question in questions
+      each questionData in questions
         li
-          p= question.question
-          form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
+          p= questionData.question
+          form.edit(action=`/surveys/${survey.id}/questions/${questionData.id}` method="get")
             button(type="submit") Edit
 
   .add_question
