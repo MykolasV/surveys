@@ -5,6 +5,7 @@ const session = require("express-session");
 const store = require("connect-loki");
 const { body, validationResult } = require("express-validator");
 const PgPersistence = require("./lib/pg-persistence");
+const catchError = require("./lib/catch-error");
 
 const app = express();
 const host = "localhost";
@@ -60,24 +61,21 @@ app.get("/", (req, res) => {
 });
 
 // Render the list of surveys
-app.get("/surveys", async (req, res, next) => {
-  try {
+app.get("/surveys",
+  catchError(async (req, res) => {
     let store = res.locals.store;
     let surveys = await store.allSurveys();
-  
     let surveysInfo = surveys.map(survey => ({
       countAllQuestions: survey.questions.length,
       countAllParticipants: survey.participants.length,
     }));
-  
+
     res.render("surveys", {
       surveys,
       surveysInfo,
     });
-  } catch (error) {
-    next(error);
-  }
-});
+  })
+);
 
 // Render new survey form
 app.get("/surveys/new", (req, res) => {
@@ -123,23 +121,19 @@ app.post("/surveys",
 );
 
 // Render individual survey and its questions
-app.get("/surveys/:surveyId", async (req, res, next) => {
-  try {
+app.get("/surveys/:surveyId",
+  catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
     let survey = await res.locals.store.loadSurvey(+surveyId);
   
-    if (survey === undefined) {
-      next(new Error("Not found."));
-    } else {
-      res.render("survey", { 
-        survey,
-        questions: survey.questions,
-      });
-    }
-  } catch(error) {
-    next(error);
-  }
-});
+    if (survey === undefined) throw new Error("Not found.");
+
+    res.render("survey", { 
+      survey,
+      questions: survey.questions,
+    });
+  })
+);
 
 // Delete a question from a survey
 app.post("/surveys/:surveyId/questions/:questionId/destroy", (req, res, next) => {
