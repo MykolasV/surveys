@@ -331,19 +331,26 @@ app.post("/surveys/:surveyId/edit",
       });
     };
 
-    let errors = validationResult(req);
+    try {
+      let errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      errors.array().forEach(message => req.flash("error", message.msg));
-      await rerenderEditSurvey();
-    } else if (await store.existsSurveyTitle(surveyTitle)) {
-      req.flash("error", "The survey title must be unique.");
-      await rerenderEditSurvey();
-    } else if (!(await store.changeSurveyTitle(+surveyId, surveyTitle))) {
-      throw new Error("Not Found.");
-    } else {
-      req.flash("success", "Survey title updated.");
-      res.redirect(`/surveys/${surveyId}`);
+      if (!errors.isEmpty()) {
+        errors.array().forEach(message => req.flash("error", message.msg));
+        await rerenderEditSurvey();
+      } else if (await store.existsSurveyTitle(surveyTitle)) {
+        req.flash("error", "The survey title must be unique.");
+        await rerenderEditSurvey();
+      } else if (!(await store.changeSurveyTitle(+surveyId, surveyTitle))) {
+        throw new Error("Not Found.");
+      } else {
+        req.flash("success", "Survey title updated.");
+        res.redirect(`/surveys/${surveyId}`);
+      }
+    } catch (error) {
+      if (store.isUniqueConstraintViolation(error)) {
+        req.flash("error", "The survey must be unique.");
+        await rerenderEditSurvey();
+      }
     }
   })
 );
