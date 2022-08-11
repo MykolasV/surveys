@@ -128,10 +128,7 @@ app.get("/surveys/:surveyId",
   
     if (survey === undefined) throw new Error("Not found.");
 
-    res.render("survey", { 
-      survey,
-      questions: survey.questions,
-    });
+    res.render("survey", { survey });
   })
 );
 
@@ -145,7 +142,7 @@ app.post("/surveys/:surveyId/questions",
     body("options")
       .trim()
       .custom((optionString, { req }) => {
-        if (["closed", "nominal"].includes(req.body.type)) {
+        if (["closed", "nominal"].includes(req.body.questionType)) {
           let options = optionString.split(/, +|,/).filter(str => str.trim().length > 0);
           return options.length > 0;
         } else {
@@ -173,7 +170,6 @@ app.post("/surveys/:surveyId/questions",
         res.render("survey", {
           flash: req.flash(),
           survey,
-          questions: survey.questions,
           questionText,
           selectedType: questionType,
           options: options.join(', '),
@@ -235,7 +231,7 @@ app.post("/surveys/:surveyId/questions/:questionId",
     body("options")
       .trim()
       .custom((optionString, { req }) => {
-        if (["closed", "nominal"].includes(req.body.type)) {
+        if (["closed", "nominal"].includes(req.body.questionType)) {
           let options = optionString.split(/, +|,/).filter(str => str.trim().length > 0);
           return options.length > 0;
         } else {
@@ -274,12 +270,10 @@ app.post("/surveys/:surveyId/questions/:questionId",
         let options = req.body.options.split(/, +|,/).map(option => option.trim());
 
         let updated = await res.locals.store.updateQuestion(+surveyId, +questionId, questionText, questionType, options);
-        if (!updated) {
-          throw new Error("Not Found");
-        } else {
-          req.flash("success", "The question was updated.");
-          res.redirect(`/surveys/${surveyId}`);
-        }
+        if (!updated) throw new Error("Not Found");
+
+        req.flash("success", "The question was updated.");
+        res.redirect(`/surveys/${surveyId}`);
       }
     }
   })

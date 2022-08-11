@@ -7,11 +7,11 @@ block main
       button(type="submit") Edit
 
   ul#questions
-    if questions.length === 0
+    if survey.questions.length === 0
       p There are no questions in this survey.
       p Add a question below.
     else
-      each question in questions
+      each question in survey.questions
         li
           p= question.question_text
           form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
