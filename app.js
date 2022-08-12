@@ -111,11 +111,16 @@ app.post("/surveys",
     } else if (await store.existsSurveyTitle(surveyTitle)) {
       req.flash("error", "The survey title must be unique.");
       rerenderNewSurvey();
-    } else if (!(await store.createSurvey(surveyTitle))) {
-      throw new Error("Not Found.");
     } else {
-      req.flash("success", "The survey has been created.");
-      res.redirect("/surveys");
+      let created = await store.createSurvey(surveyTitle);
+
+      if (!created) {
+        req.flash("error", "The survey title must be unique.");
+        rerenderNewSurvey();
+      } else {
+        req.flash("success", "The survey has been created.");
+        res.redirect("/surveys");
+      }
     }
   })
 );
