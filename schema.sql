@@ -40,3 +40,8 @@ CREATE TABLE results (
   participant_id integer NOT NULL REFERENCES participants (id) ON DELETE CASCADE,
   answer_id integer NOT NULL REFERENCES answers (id) ON DELETE CASCADE
 );
+
+CREATE TABLE users (
+  username text PRIMARY KEY,
+  password text NOT NULL
+);
