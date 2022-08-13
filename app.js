@@ -6,6 +6,7 @@ const store = require("connect-loki");
 const { body, validationResult } = require("express-validator");
 const PgPersistence = require("./lib/pg-persistence");
 const catchError = require("./lib/catch-error");
+const { Session } = require("express-session");
 
 const app = express();
 const host = "localhost";
