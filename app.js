@@ -58,6 +58,16 @@ app.use((req, res, next) => {
   next();
 });
 
+// Detect unauthorized access to routes.
+const requiresAuthentication = (req, res, next) => {
+  if (!res.locals.signedIn) {
+    console.log("Unauthorized.");
+    res.status(401).send("Unauthorized.");
+  } else {
+    next();
+  }
+};
+
 // Redirect start page
 app.get("/", (req, res) => {
   res.redirect("/surveys");
@@ -81,12 +91,15 @@ app.get("/surveys",
 );
 
 // Render new survey form
-app.get("/surveys/new", (req, res) => {
+app.get("/surveys/new",
+  requiresAuthentication,
+  (req, res) => {
   res.render("new-survey");
 });
 
 // Create a new survey
 app.post("/surveys",
+  requiresAuthentication,
   [
     body("surveyTitle")
     .trim()
@@ -142,6 +155,7 @@ app.get("/surveys/:surveyId",
 
 // Add a new question to a survey
 app.post("/surveys/:surveyId/questions",
+  requiresAuthentication,
   [
     body("questionText")
       .trim()
@@ -195,6 +209,7 @@ app.post("/surveys/:surveyId/questions",
 
 // Render edit question form
 app.get("/surveys/:surveyId/questions/:questionId",
+  requiresAuthentication,
   catchError(async (req, res) => {
     let { surveyId, questionId } = req.params;
     let question = await res.locals.store.loadQuestion(+surveyId, +questionId);
@@ -219,6 +234,7 @@ app.get("/surveys/:surveyId/questions/:questionId",
 
 // Delete a question from a survey
 app.post("/surveys/:surveyId/questions/:questionId/destroy",
+  requiresAuthentication,
   catchError(async (req, res) => {
     let { surveyId, questionId } = req.params;
     let deleted = await res.locals.store.deleteQuestion(+surveyId, +questionId);
@@ -231,6 +247,7 @@ app.post("/surveys/:surveyId/questions/:questionId/destroy",
 
 // Update question
 app.post("/surveys/:surveyId/questions/:questionId",
+  requiresAuthentication,
   [
     body("questionText")
       .trim()
@@ -289,6 +306,7 @@ app.post("/surveys/:surveyId/questions/:questionId",
 
 // Render edit survey form
 app.get("/surveys/:surveyId/edit",
+  requiresAuthentication,
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
     let survey = await res.locals.store.loadSurvey(+surveyId);
@@ -301,6 +319,7 @@ app.get("/surveys/:surveyId/edit",
 
 // Delete survey
 app.post("/surveys/:surveyId/destroy",
+  requiresAuthentication,
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
     let deleted = await res.locals.store.deleteSurvey(+surveyId);
@@ -314,6 +333,7 @@ app.post("/surveys/:surveyId/destroy",
 
 // Update survey title
 app.post("/surveys/:surveyId/edit",
+  requiresAuthentication,
   [
     body("surveyTitle")
       .trim()

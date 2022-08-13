@@ -2,7 +2,8 @@ extends layout
 
 block main
   if surveys === undefined || surveys.length === 0
-    p#no_list You don't have any surveys. Why not create one?
+    if signedIn
+      p#no_list You don't have any surveys. Why not create one?
   else
     ul#surveys_list
       each survey, surveyIndex in surveys
@@ -15,5 +16,6 @@ block main
               p Participants: #{surveyInfo.countAllParticipants}
 
 block headerLinks
-  .actions
-    a.add(href="/surveys/new") New Survey
+  if signedIn
+    .actions
+      a.add(href="/surveys/new") New Survey
