@@ -61,8 +61,7 @@ app.use((req, res, next) => {
 // Detect unauthorized access to routes.
 const requiresAuthentication = (req, res, next) => {
   if (!res.locals.signedIn) {
-    console.log("Unauthorized.");
-    res.status(401).send("Unauthorized.");
+    res.redirect(302, "/users/signin");
   } else {
     next();
   }
@@ -75,6 +74,7 @@ app.get("/", (req, res) => {
 
 // Render the list of surveys
 app.get("/surveys",
+  requiresAuthentication,
   catchError(async (req, res) => {
     let store = res.locals.store;
     let surveys = await store.allSurveys();
@@ -143,6 +143,7 @@ app.post("/surveys",
 
 // Render individual survey and its questions
 app.get("/surveys/:surveyId",
+  requiresAuthentication,
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
     let survey = await res.locals.store.loadSurvey(+surveyId);
