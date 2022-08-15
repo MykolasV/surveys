@@ -33,7 +33,11 @@ Participant
 - The landing page introduces the application. You can sign up/in to start using it.
 - The user signs up/in. This user is an Admin.
   - The dash board with created surveys is presented.
-  - An admin user can create, delete, edit or view a survey.
+    - unpublished surveys
+        - An admin user can create, delete, edit, view and publish a survey.
+    - published surveys
+        - The link to the survey to be given to participants
+        - An admin can view the results and stats, delete or unpublish a survey.
 
   - Creating a Survey
     - add title
@@ -68,5 +72,4 @@ Participant
   - edit answers
   - submit the survey
     - Participant is added to participants of the survey
-    - Answers are save to the survey
-
+    - Answers are saved to the survey
