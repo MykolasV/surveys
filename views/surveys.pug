@@ -6,13 +6,12 @@ block main
   else
     ul#surveys_list
       each survey, surveyIndex in surveys
-        - let surveyInfo = surveysInfo[surveyIndex];
         li
           a(href=`/surveys/${survey.id}`)
             .survey_details
               h2= survey.title
-              p Questions: #{surveyInfo.countAllQuestions}
-              p Participants: #{surveyInfo.countAllParticipants}
+              p Questions: #{survey.numberOfQuestions}
+              p Participants: #{survey.numberOfParticipants}
 
 block headerLinks
   .actions

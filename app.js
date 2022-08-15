@@ -78,15 +78,14 @@ app.get("/surveys",
   catchError(async (req, res) => {
     let store = res.locals.store;
     let surveys = await store.allSurveys();
-    let surveysInfo = surveys.map(survey => ({
-      countAllQuestions: survey.questions.length,
-      countAllParticipants: survey.participants.length,
-    }));
 
-    res.render("surveys", {
-      surveys,
-      surveysInfo,
-    });
+    for (let i = 0; i < surveys.length; ++i) {
+      let survey = surveys[i];
+      survey.numberOfQuestions = survey.questions.length;
+      survey.numberOfParticipants = survey.number_of_participants;
+    }
+
+    res.render("surveys", { surveys });
   })
 );
 
