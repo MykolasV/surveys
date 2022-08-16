@@ -32,18 +32,13 @@ CREATE TABLE participants (
   survey_id integer NOT NULL REFERENCES surveys (id) ON DELETE CASCADE
 );
 
--- The answer can be:
--- - option IDs for `closed` and `nominal` quesitons (i.e. '1, 2, 5')
--- - user answer for `open` questions (i.e. 'I like ice cream becuase it's delicious.')
 CREATE TABLE answers (
-  id serial PRIMARY KEY,
-  answer text NOT NULL
-);
-
-CREATE TABLE results (
   id serial PRIMARY KEY,
   survey_id integer NOT NULL REFERENCES surveys (id) ON DELETE CASCADE,
   question_id integer NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
   participant_id integer NOT NULL REFERENCES participants (id) ON DELETE CASCADE,
-  answer_id integer NOT NULL REFERENCES answers (id) ON DELETE CASCADE
+  -- The answer can be:
+  -- - option IDs for `closed` and `nominal` quesitons (i.e. '1, 2, 5')
+  -- - user answer for `open` questions (i.e. 'I like ice cream becuase it's delicious.')
+  answer text NOT NULL
 );

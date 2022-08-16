@@ -436,6 +436,19 @@ app.post("/surveys/:surveyId/publish",
   })
 )
 
+// Display published survey for participant
+app.get("/surveys/published/:surveyId",
+  catchError(async (req, res) => {
+    let survey = await res.locals.store.loadPublishedSurvey(req.params.surveyId);
+
+    if (!survey) throw new Error("Not Found");
+
+    console.log(survey.questions[0]);
+
+    res.render("published-survey", { survey });
+  })
+)
+
 // Error handler
 app.use((err, req, res, _next) => {
   console.log(err); // Writes more extensive information to the console log
