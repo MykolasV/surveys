@@ -6,12 +6,21 @@ block main
   else
     ul#surveys_list
       each survey, surveyIndex in surveys
-        li
-          a(href=`/surveys/${survey.id}`)
-            .survey_details
-              h2= survey.title
-              p Questions: #{survey.numberOfQuestions}
-              p Participants: #{survey.numberOfParticipants}
+        if survey.published
+          li.published
+            a(href=`/surveys/${survey.id}`)
+              .survey_details
+                h2= survey.title
+                p Questions: #{survey.numberOfQuestions}
+                p Participants: #{survey.numberOfParticipants}
+                p Published
+        else 
+          li.unpublished
+            a(href=`/surveys/${survey.id}`)
+              .survey_details
+                h2= survey.title
+                p Questions: #{survey.numberOfQuestions}
+                p Unpublished
 
 block headerLinks
   .actions

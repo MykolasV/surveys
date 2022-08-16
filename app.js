@@ -421,6 +421,21 @@ app.post("/users/signout", (req, res) => {
   res.redirect("/users/signin");
 });
 
+// Publish survey
+app.post("/surveys/:surveyId/publish",
+  catchError(async (req, res) => {
+    let surveyId = req.params.surveyId;
+    let published = await res.locals.store.publishSurvey(surveyId);
+
+    if (!published) {
+      throw new Error("not Found.");
+    } else {
+      req.flash("success", "The survey was published!");
+      res.redirect("/surveys");
+    }
+  })
+)
+
 // Error handler
 app.use((err, req, res, _next) => {
   console.log(err); // Writes more extensive information to the console log

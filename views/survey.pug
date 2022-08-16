@@ -3,8 +3,9 @@ extends layout
 block main
   header
     h2= survey.title
-    form.edit(action=`/surveys/${survey.id}/edit` method="get")
-      button(type="submit") Edit
+    if !survey.published
+      form.edit(action=`/surveys/${survey.id}/edit` method="get")
+        button(type="submit") Edit
 
   ul#questions
     if survey.questions.length === 0
@@ -13,48 +14,56 @@ block main
       each question in survey.questions
         li
           p= question.question_text
-          form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
-            button(type="submit") Edit
+          if !survey.published
+            form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
+              button(type="submit") Edit
+          else
+            form(action=`/surveys/${survey.id}/questions/${question.id}/results` method="get")
+              button(type="submit") Results
 
-  .add_question
-    h3 Add Question
-    form(action=`/surveys/${survey.id}/questions` method="post")
-      dl
-        dt
-          label(for="question") Question 
-        dd
-          input(type="text"
-                name="questionText"
-                id="questionText"
-                placeholder="question..."
-                value=questionText || "")
-        dt 
-          label(for="type") Type
-        dd 
-          select(name="questionType" id="questionType")
-            if selectedType === "closed"
-              option(value="closed" selected) Closed
-            else
-              option(value="closed") Closed
+  if !survey.published
+    form.publish(action=`/surveys/${survey.id}/publish` method="post")
+      button(type="submit") Publish Survey
 
-            if selectedType === "nominal"
-              option(value="nominal" selected) Nominal 
-            else
-              option(value="nominal") Nominal
+    .add_question
+      h3 Add Question
+      form(action=`/surveys/${survey.id}/questions` method="post")
+        dl
+          dt
+            label(for="question") Question 
+          dd
+            input(type="text"
+                  name="questionText"
+                  id="questionText"
+                  placeholder="question..."
+                  value=questionText || "")
+          dt 
+            label(for="type") Type
+          dd 
+            select(name="questionType" id="questionType")
+              if selectedType === "closed"
+                option(value="closed" selected) Closed
+              else
+                option(value="closed") Closed
 
-            if selectedType === "open"
-              option(value="open" selected) Open
-            else
-              option(value="open") Open
-        dt 
-          label(for="options") Options
-        dd
-          input(type="text"
-                name="options"
-                id="options"
-                placeholder="option1, option2, option3..."
-                value=options || "")
-      button(type="submit") Add
+              if selectedType === "nominal"
+                option(value="nominal" selected) Nominal 
+              else
+                option(value="nominal") Nominal
+
+              if selectedType === "open"
+                option(value="open" selected) Open
+              else
+                option(value="open") Open
+          dt 
+            label(for="options") Options
+          dd
+            input(type="text"
+                  name="options"
+                  id="options"
+                  placeholder="option1, option2, option3..."
+                  value=options || "")
+        button(type="submit") Add
 
 block headerLinks
   .actions
