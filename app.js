@@ -436,6 +436,14 @@ app.post("/surveys/:surveyId/publish",
   })
 )
 
+// Start survey page
+app.get("/surveys/published/:surveyId/start",
+  catchError(async (req, res) => {
+
+    res.render("start-survey", { surveyId: req.params.surveyId });
+  })
+)
+
 // Display published survey for participant
 app.get("/surveys/published/:surveyId",
   catchError(async (req, res) => {
@@ -468,7 +476,7 @@ app.post("/surveys/published/:surveyId",
       if (!added) throw new Error("Not Found.");
     }
 
-    res.send("Success!");
+    res.render("end-survey");
   })
 )
 
