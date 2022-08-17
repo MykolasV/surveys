@@ -443,9 +443,32 @@ app.get("/surveys/published/:surveyId",
 
     if (!survey) throw new Error("Not Found");
 
-    console.log(survey.questions[0]);
-
     res.render("published-survey", { survey });
+  })
+)
+
+// Submit survey
+app.post("/surveys/published/:surveyId",
+  catchError(async (req, res) => {
+    let surveyId = req.params.surveyId;
+    let questionIds = Object.keys(req.body);
+    let participant = await res.locals.store.addParticipant(+surveyId);
+
+    if (!participant) throw new Error("Not Found.");
+
+    let participantId = participant.id;
+
+    for (let i = 0; i < questionIds.length; ++i) {
+      let questionId = questionIds[i];
+      let answer = req.body[questionId];
+
+      if (Array.isArray(answer)) answer = answer.join(', ');
+
+      let added = await res.locals.store.addAnswer(+surveyId, +questionId, +participantId, answer);
+      if (!added) throw new Error("Not Found.");
+    }
+
+    res.send("Success!");
   })
 )
 

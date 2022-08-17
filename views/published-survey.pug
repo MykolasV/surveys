@@ -20,17 +20,17 @@ html(lang="en-GB")
           dl 
             each question in survey.questions
               dt
-                label(for=`question-${question.id}`) #{question.question_text}
+                label(for=`${question.id}`) #{question.question_text}
               dd 
                 if question.question_type === 'open'
-                  textarea(name=`question-${question.id}` id=`question-${question.id}`)
+                  textarea(name=`${question.id}` id=`${question.id}`)
                 else if question.question_type === 'closed'
                   each option in question.options
-                    input(type="radio" name="option" id=`option-${option.id}`)
-                    label(for=`option${option.id}`) #{option.option_value}
+                    input(type="radio" name=`${question.id}` id=`${option.id}` value=`${option.id}`)
+                    label(for=`${option.id}`) #{option.option_value}
                 else if question.question_type === 'nominal'
                   each option in question.options 
-                    input(type="checkbox" name=`option-${option.id}` id=`option-${option.id}`)
-                    label(for=`option-${option.id}`) #{option.option_value}
+                    input(type="checkbox" name=`${question.id}` id=`${option.id}` value=`${option.id}`)
+                    label(for=`${option.id}`) #{option.option_value}
 
         button(type="submit") Submit
