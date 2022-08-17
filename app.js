@@ -459,24 +459,35 @@ app.get("/surveys/published/:surveyId",
 app.post("/surveys/published/:surveyId",
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
+    let survey = await res.locals.store.loadPublishedSurvey(+surveyId);
+    if (!survey) throw new Error("Not Found.");
+
     let questionIds = Object.keys(req.body);
-    let participant = await res.locals.store.addParticipant(+surveyId);
 
-    if (!participant) throw new Error("Not Found.");
-
-    let participantId = participant.id;
-
-    for (let i = 0; i < questionIds.length; ++i) {
-      let questionId = questionIds[i];
-      let answer = req.body[questionId];
-
-      if (Array.isArray(answer)) answer = answer.join(', ');
-
-      let added = await res.locals.store.addAnswer(+surveyId, +questionId, +participantId, answer);
-      if (!added) throw new Error("Not Found.");
+    if (questionIds.length < survey.questions.length) {
+      req.flash("error", "Please answer all of the questions.");
+      res.render("published-survey", { 
+        survey,
+        flash: req.flash(),
+      });
+    } else {
+      let participant = await res.locals.store.addParticipant(+surveyId);
+      if (!participant) throw new Error("Not Found.");
+  
+      let participantId = participant.id;
+  
+      for (let i = 0; i < questionIds.length; ++i) {
+        let questionId = questionIds[i];
+        let answer = req.body[questionId];
+  
+        if (Array.isArray(answer)) answer = answer.join(', ');
+  
+        let added = await res.locals.store.addAnswer(+surveyId, +questionId, +participantId, answer);
+        if (!added) throw new Error("Not Found.");
+      }
+  
+      res.render("end-survey");
     }
-
-    res.render("end-survey");
   })
 )
 

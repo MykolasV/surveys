@@ -1,36 +1,28 @@
-doctype html
+extends layout
 
-html(lang="en-GB")
+block headerLinks
 
-  head
-    title Surveys
-    meta(charset="UTF-8")
-    link(rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans")
-    link(rel="stylesheet" href="/stylesheets/whitespace-reset.css")
-    link(rel="stylesheet" href="/stylesheets/application.css")
-    script(src="/javascripts/application.js")
+block signIn
 
-  body 
-    header 
-      h1= survey.title 
+block main
+  h3= survey.title
 
-    main 
-      form(action=`/surveys/published/${survey.id}` method="post")
-        fieldset 
-          dl 
-            each question in survey.questions
-              dt
-                label(for=`question-${question.id}`) #{question.question_text}
-              dd 
-                if question.question_type === 'open'
-                  textarea(name=`${question.id}` id=`question-${question.id}`)
-                else if question.question_type === 'closed'
-                  each option in question.options
-                    input(type="radio" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
-                    label(for=`option-${option.id}`) #{option.option_value}
-                else if question.question_type === 'nominal'
-                  each option in question.options 
-                    input(type="checkbox" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
-                    label(for=`option-${option.id}`) #{option.option_value}
+  form(action=`/surveys/published/${survey.id}` method="post")
+    fieldset 
+      dl 
+        each question in survey.questions
+          dt
+            label(for=`question-${question.id}`) #{question.question_text}
+          dd 
+            if question.question_type === 'open'
+              textarea(name=`${question.id}` id=`question-${question.id}`)
+            else if question.question_type === 'closed'
+              each option in question.options
+                input(type="radio" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
+                label(for=`option-${option.id}`) #{option.option_value}
+            else if question.question_type === 'nominal'
+              each option in question.options 
+                input(type="checkbox" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
+                label(for=`option-${option.id}`) #{option.option_value}
 
-        button(type="submit") Submit
+    button(type="submit") Submit
