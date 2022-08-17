@@ -1,15 +1,8 @@
-doctype html
+extends layout
 
-html(lang="en-GB")
+block headerLinks
 
-  head
-    title Surveys
-    meta(charset="UTF-8")
-    link(rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans")
-    link(rel="stylesheet" href="/stylesheets/whitespace-reset.css")
-    link(rel="stylesheet" href="/stylesheets/application.css")
-    script(src="/javascripts/application.js")
+block signIn
 
-  body    
-    main 
-      a(href=`/surveys/published/${surveyId}`) Start the Survey!
+block main 
+  a(href=`/surveys/published/${surveyId}`) Start the Survey!
