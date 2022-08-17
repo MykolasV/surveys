@@ -464,7 +464,8 @@ app.post("/surveys/published/:surveyId",
 
     let questionIds = Object.keys(req.body);
 
-    if (questionIds.length < survey.questions.length) {
+    if (questionIds.length !== survey.questions.length ||
+        questionIds.some(questionId => req.body[questionId].trim().length === 0)) {
       req.flash("error", "Please answer all of the questions.");
       res.render("published-survey", { 
         survey,
