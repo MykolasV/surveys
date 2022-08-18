@@ -450,7 +450,7 @@ app.get("/surveys/published/:surveyId/start",
 // Display published survey for participant
 app.get("/surveys/published/:surveyId",
   catchError(async (req, res) => {
-    let survey = await res.locals.store.loadPublishedSurvey(req.params.surveyId);
+    let survey = await res.locals.store.loadPublishedSurvey(+req.params.surveyId);
 
     if (!survey) throw new Error("Not Found");
 
@@ -468,7 +468,7 @@ app.post("/surveys/published/:surveyId",
     let questionIds = Object.keys(req.body);
 
     if (questionIds.length !== survey.questions.length ||
-        questionIds.some(questionId => req.body[questionId].trim().length === 0)) {
+        questionIds.some(questionId => req.body[questionId].length === 0)) {
       req.flash("error", "Please answer all of the questions.");
       res.render("published-survey", { 
         survey,

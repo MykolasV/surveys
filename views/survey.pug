@@ -64,6 +64,8 @@ block main
                   placeholder="option1, option2, option3..."
                   value=options || "")
         button(type="submit") Add
+  else
+    a(href=`/surveys/published/${survey.id}/start` target='_blank') Link to Survey
 
 block headerLinks
   .actions
