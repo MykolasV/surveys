@@ -19,11 +19,9 @@ INSERT INTO options (option_value, question_id)
          ('strawberry', 2),
          ('pistachio', 2),
          ('None of the above', 2),
-         (null, 3),
          ('London', 4),
          ('Birmingham', 4),
          ('Liverpool', 4),
          ('true', 5),
          ('false', 5),
-         ('neutral', 5),
-         (null, 6);
+         ('neutral', 5);
