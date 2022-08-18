@@ -435,7 +435,7 @@ app.post("/surveys/:surveyId/publish",
     req.flash("success", "The survey was published!");
     res.redirect("/surveys");
   })
-)
+);
 
 // Unpublish survey
 app.post("/surveys/:surveyId/unpublish",
@@ -448,7 +448,7 @@ app.post("/surveys/:surveyId/unpublish",
     req.flash("success", "The survey was unpublished!");
     res.redirect("/surveys");
   })
-)
+);
 
 // Start survey page
 app.get("/surveys/published/:surveyId/start",
@@ -456,7 +456,7 @@ app.get("/surveys/published/:surveyId/start",
 
     res.render("start-survey", { surveyId: req.params.surveyId });
   })
-)
+);
 
 // Display published survey for participant
 app.get("/surveys/published/:surveyId",
@@ -467,7 +467,7 @@ app.get("/surveys/published/:surveyId",
 
     res.render("published-survey", { survey });
   })
-)
+);
 
 // Submit survey
 app.post("/surveys/published/:surveyId",
@@ -504,7 +504,7 @@ app.post("/surveys/published/:surveyId",
       res.render("end-survey");
     }
   })
-)
+);
 
 // Error handler
 app.use((err, req, res, _next) => {
