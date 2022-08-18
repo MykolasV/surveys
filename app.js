@@ -179,7 +179,10 @@ app.post("/surveys/:surveyId/questions",
 
     let questionText = req.body.questionText;
     let questionType = req.body.questionType;
-    let options = req.body.options.split(/, +|,/);
+    let options = [];
+    if (["closed", "nominal"].includes(questionType)) {
+      options = req.body.options.split(/, +|,/);
+    }
 
     if (!survey) {
       throw new Error("Not Found.");
