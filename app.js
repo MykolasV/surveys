@@ -428,14 +428,25 @@ app.post("/users/signout", (req, res) => {
 app.post("/surveys/:surveyId/publish",
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
-    let published = await res.locals.store.publishSurvey(surveyId);
+    let published = await res.locals.store.publishSurvey(+surveyId);
 
-    if (!published) {
-      throw new Error("not Found.");
-    } else {
-      req.flash("success", "The survey was published!");
-      res.redirect("/surveys");
-    }
+    if (!published) throw new Error("not Found.");
+
+    req.flash("success", "The survey was published!");
+    res.redirect("/surveys");
+  })
+)
+
+// Unpublish survey
+app.post("/surveys/:surveyId/unpublish",
+  catchError(async (req, res) => {
+    let surveyId = req.params.surveyId;
+    let unpublished = await res.locals.store.unpublishSurvey(+surveyId);
+
+    if (!unpublished) throw new Error("Not Found.");
+
+    req.flash("success", "The survey was unpublished!");
+    res.redirect("/surveys");
   })
 )
 

@@ -66,6 +66,8 @@ block main
         button(type="submit") Add
   else
     a(href=`/surveys/published/${survey.id}/start` target='_blank') Link to Survey
+    form.unpublish(action=`/surveys/${survey.id}/unpublish` method="post")
+      button(type="submit") Unpublish Survey
 
 block headerLinks
   .actions
