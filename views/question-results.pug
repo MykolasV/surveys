@@ -1,0 +1,19 @@
+extends layout
+
+block main
+  h2= results.question_text
+
+  article
+    h3 Answers
+    ul#answers
+      each answer in results.answers
+        if results.question_type === 'open'
+          li
+            span= answer
+        else
+          li
+            span #{answer.option}: #{answer.percentage}%
+
+block headerLinks 
+  .actions 
+    a.survey(href=`/surveys/${surveyId}`) All Questions

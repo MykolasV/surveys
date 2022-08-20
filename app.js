@@ -506,6 +506,21 @@ app.post("/surveys/published/:surveyId",
   })
 );
 
+// Show results for question
+app.get("/surveys/:surveyId/questions/:questionId/results",
+  catchError(async (req, res) => {
+    let { surveyId, questionId} = req.params;
+    let results = await res.locals.store.questionResults(surveyId, questionId);
+
+    if (!results) throw new Error("Not Found");
+
+    res.render("question-results", {
+      surveyId,
+      results,
+    })
+  })
+);
+
 // Error handler
 app.use((err, req, res, _next) => {
   console.log(err); // Writes more extensive information to the console log

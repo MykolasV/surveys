@@ -19,11 +19,12 @@ block main
               button(type="submit") Edit
           else
             form(action=`/surveys/${survey.id}/questions/${question.id}/results` method="get")
-              button(type="submit") Results
+              button(type="submit") Answers
 
   if !survey.published
-    form.publish(action=`/surveys/${survey.id}/publish` method="post")
-      button(type="submit") Publish Survey
+    if survey.questions.length > 0
+      form.publish(action=`/surveys/${survey.id}/publish` method="post")
+        button(type="submit") Publish Survey
 
     .add_question
       h3 Add Question
