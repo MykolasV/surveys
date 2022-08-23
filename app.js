@@ -417,6 +417,48 @@ app.post("/users/signin",
   })
 );
 
+// Handle Sign Up page.
+app.get("/users/signup", (req, res) => {
+  req.flash("info", "Please create your credentials.");
+  res.render("signup", {
+    flash: req.flash(),
+  });
+});
+
+// Handle Sign Up form submission
+app.post("/users/signup",
+  catchError(async (req, res) => {
+    let store = res.locals.store;
+    let username = req.body.username.trim();
+    let password = req.body.password;
+
+    if (await store.existsUsername(username)) {
+      req.flash("error", "Username exists. Please pick a different username.");
+      res.render("signup", {
+        flash: req.flash(),
+      });
+    } else if (password.length < 6) {
+      req.flash("error", "The password must be at least 6 characters long.");
+      res.render("signup", {
+        flash: req.flash(),
+        username,
+      });
+    } else if (password.length > 15) {
+      req.flash("error", "The password must be no longer than 15 characters.");
+      res.render("signup", {
+        flash: req.flash(),
+        username,
+      })
+    } else {
+      let createdAccount = await store.saveUser(username, password);
+      if (!createdAccount) throw new Error("Not Found.");
+
+      req.flash("success", "Your account was created!");
+      res.redirect("signin");
+    }
+  })
+);
+
 // Handle Sign Out
 app.post("/users/signout", (req, res) => {
   delete req.session.username;
