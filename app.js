@@ -388,10 +388,7 @@ app.post("/surveys/:surveyId/edit",
 
 // Render the Sign In page.
 app.get("/users/signin", (req, res) => {
-  req.flash("info", "Please sign in.");
-  res.render("signin", {
-    flash: req.flash(),
-  });
+  res.render("signin");
 });
 
 // Handle Sign In form submission
@@ -419,10 +416,7 @@ app.post("/users/signin",
 
 // Handle Sign Up page.
 app.get("/users/signup", (req, res) => {
-  req.flash("info", "Please create your credentials.");
-  res.render("signup", {
-    flash: req.flash(),
-  });
+  res.render("signup");
 });
 
 // Handle Sign Up form submission
