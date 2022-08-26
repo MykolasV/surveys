@@ -14,15 +14,21 @@ html(lang="en-GB")
   body
     header
       h1 Surveys
+      - let kinds = Object.keys(flash || {})
+        if kinds.length > 0
+          ul 
+            each kind in kinds 
+              each message in flash[kind] 
+                li.flash(class=kind)= message
       block headerLinks
 
     main
-      - let kinds = Object.keys(flash || {})
-      if kinds.length > 0
-        ul 
-          each kind in kinds 
-            each message in flash[kind] 
-              li.flash(class=kind)= message
+      //- - let kinds = Object.keys(flash || {})
+      //- if kinds.length > 0
+      //-   ul 
+      //-     each kind in kinds 
+      //-       each message in flash[kind] 
+      //-         li.flash(class=kind)= message
 
       block main
 
