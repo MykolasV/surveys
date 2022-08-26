@@ -6,17 +6,17 @@ block main
   form(action=`/users/signin` method="post")
     dl
       dt
-        label(for="username") Username:
+        label(for="username") Username
       dd
-        input(type="text" name="username" placeholder="username" value=username)
+        input(type="text" name="username" id="username" placeholder="username" value=username)
 
       dt
-        label(for="password") Password:
+        label(for="password") Password
       dd
-        input(type="password" name="password" placeholder="password")
+        input(type="password" name="password" id="password" placeholder="********")
 
     fieldset.actions
-      input(type="submit" value="Sign In")
+      button(type="submit") Sign In
 
   p Don't have an account? 
     a(href="/users/signup") Sign Up
