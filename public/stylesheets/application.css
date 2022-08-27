@@ -136,29 +136,23 @@ a:hover {
   color: #89e389;
 }
 
-/* header h2 {
-  display: inline-block;
-} */
-
-/* header .actions {
-  margin: 30px 0;
-}
-
-h1 {
-  font-size: 38px;
-}
-
 #surveys_list {
-  margin: 30px 0 0 0;
-}
-
-a {
-  text-decoration: none;
+  width: 80%;
+  margin: 0 auto;
 }
 
 #surveys_list li {
-  background-color: #abbffa;
-  margin-bottom: 5px;
+  display: inline-block;
+  vertical-align: top;
+  background-color: #c9d6f7;
+  width: 220px;
+  margin: 0 0 30px;
+  border: 1px solid #8092b1;
+  border-radius: 10px;
+}
+
+#surveys_list li a {
+  padding: 0 20px;
 }
 
 .survey_details h2, .survey_details p {
@@ -170,6 +164,7 @@ a {
   font-size: 28px;
 }
 
+/*
 .flash {
   padding: 4px 0;
   margin: 0 0 4px 0;
@@ -223,8 +218,16 @@ form.delete {
   /* CSS for tablets and larger */
 }
 
+@media screen and (min-width: 685px) {
+  #surveys_list li {
+    margin-right: 30px;
+    margin-left: 30px;
+  }
+}
+
 @media screen and (min-width: 961px) {
   /* CSS for small desktop and laptop screens and larger */
+
   /* form dt,
   form dd {
     display: inline-block;
