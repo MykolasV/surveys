@@ -52,6 +52,34 @@ main {
   padding: 0 60px;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  color: #8092b1;
+}
+
+.flash {
+  width: 100%;
+  padding: 4px 0;
+  margin: 0 auto 4px;
+}
+
+.error {
+  background-color: rgb(255, 161, 118);
+  color: #ff0000;
+}
+
+.success,
+.info {
+  background-color: #cef5e8;
+  color: #89e389;
+}
+
+/* ===== Sign up / Sign in page ===== */
+
 form {
   padding: 60px 0 0;
 }
@@ -110,31 +138,7 @@ form .actions {
   color: inherit;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-a:hover {
-  color: #8092b1;
-}
-
-.flash {
-  width: 100%;
-  padding: 4px 0;
-  margin: 0 auto 4px;
-}
-
-.error {
-  background-color: rgb(255, 161, 118);
-  color: #ff0000;
-}
-
-.success,
-.info {
-  background-color: #cef5e8;
-  color: #89e389;
-}
+/* ===== List of surveys page / Dashboard ===== */
 
 #surveys_list {
   width: 80%;
@@ -164,23 +168,7 @@ a:hover {
   font-size: 28px;
 }
 
-/*
-.flash {
-  padding: 4px 0;
-  margin: 0 0 4px 0;
-}
-
-.error {
-  background-color: rgb(255, 161, 118);
-  color: #ff0000;
-}
-
-.success {
-  background-color: #baf6e2;
-  color: #02f702;
-}
-
-#questions li {
+/* #questions li {
   background-color: #d1dbf8;
   margin-bottom: 5px;
 }
@@ -227,34 +215,6 @@ form.delete {
 
 @media screen and (min-width: 961px) {
   /* CSS for small desktop and laptop screens and larger */
-
-  /* form dt,
-  form dd {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0 0 10px 0;
-  }
-
-  form dt {
-    width: 30%;
-  }
-
-  form dd {
-    width: 50%;
-  }
-
-  form dt label {
-    float: right;
-    width: 100%;
-    text-align: right;
-    margin: 0 40px 0 0;
-  }
-  
-  form dd input {
-    width: 80%;
-    float: left;
-  } */
-
   form dd input {
     width: 50%;
   }
