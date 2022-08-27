@@ -9,12 +9,13 @@ html {
 
 body {
   font-family: "PT Sans", sans-serif;
-  background-color: #d3d3e9;
+  background-color: #acbfef;
   text-align: center;
   font-size: 20px;
 }
 
 header {
+  padding: 0 0 40px 0;
   margin: 100px 0 20px 0;
 }
 
@@ -23,11 +24,23 @@ header h1 {
   margin: 0 0 40px 0;
 }
 
-header .actions .add img {
+header .actions img {
   display: block;
   width: 85px;
   height: 85px;
-  margin: 20px auto;
+  margin: 0 auto;
+  position: relative;
+  animation: move-up-down 2s linear infinite;
+}
+
+@keyframes move-up-down {
+  0%, 100% {
+    top: 0;
+  }
+
+  50% {
+    top: 20px;
+  }
 }
 
 header .actions {
@@ -89,7 +102,7 @@ form .actions {
 }
 
 .actions button:hover {
-  background-color: #adc3f6;
+  background-color: #b0c1e4;
 }
 
 a {
