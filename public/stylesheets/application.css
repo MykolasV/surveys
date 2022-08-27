@@ -92,8 +92,11 @@ form .actions {
   margin: 20px 0 60px;
 }
 
-.actions button {
-  margin: 20px 0;
+.actions button,
+.actions a.cancel {
+  font-size: inherit;
+  font-family: inherit;
+  margin: 20px;
   padding: 10px 20px;
   border: 1px solid #8092b1;
   border-radius: 5px;
@@ -101,8 +104,10 @@ form .actions {
   cursor: pointer;
 }
 
-.actions button:hover {
+.actions button:hover,
+.actions a.cancel:hover {
   background-color: #b0c1e4;
+  color: inherit;
 }
 
 a {
@@ -220,7 +225,7 @@ form.delete {
 
 @media screen and (min-width: 961px) {
   /* CSS for small desktop and laptop screens and larger */
-  form dt,
+  /* form dt,
   form dd {
     display: inline-block;
     vertical-align: middle;
@@ -245,12 +250,16 @@ form.delete {
   form dd input {
     width: 80%;
     float: left;
+  } */
+
+  form dd input {
+    width: 50%;
   }
 }
 
 @media screen and (min-width: 1501px) {
   /* CSS for large laptop and desktop displays */
   form dd input {
-    width: 50%;
+    width: 30%;
   }
 }

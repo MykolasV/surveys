@@ -25,4 +25,5 @@ block main
 block headerLinks
   .actions
     a.add(href="/surveys/new") New Survey
-    image(src="../images/up-arrow.png")
+    if surveys === undefined || surveys.length === 0
+      image(src="../images/up-arrow.png")
