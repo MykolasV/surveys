@@ -25,19 +25,14 @@ block main
     if survey.questions.length > 0
       form.publish(action=`/surveys/${survey.id}/publish` method="post")
         button(type="submit") Publish Survey
+    
+    if survey.questions === undefined || survey.questions.length === 0
+      image(src="../images/up-arrow.png")
+    a(href="#" id="form_link") Add Question
 
     .add_question
-      h3 Add Question
       form(action=`/surveys/${survey.id}/questions` method="post")
         dl
-          dt
-            label(for="question") Question 
-          dd
-            input(type="text"
-                  name="questionText"
-                  id="questionText"
-                  placeholder="question..."
-                  value=questionText || "")
           dt 
             label(for="type") Type
           dd 
@@ -56,6 +51,14 @@ block main
                 option(value="open" selected) Open
               else
                 option(value="open") Open
+          dt
+            label(for="question") Question 
+          dd
+            input(type="text"
+                  name="questionText"
+                  id="questionText"
+                  placeholder="question..."
+                  value=questionText || "")
           dt 
             label(for="options") Options
           dd
@@ -65,6 +68,9 @@ block main
                   placeholder="option1, option2, option3..."
                   value=options || "")
         button(type="submit") Add
+        button.cancel(type="button") Cancel
+    #overlay
+
   else
     a(href=`/surveys/published/${survey.id}/start` target='_blank') Link to Survey
     form.unpublish(action=`/surveys/${survey.id}/unpublish` method="post")

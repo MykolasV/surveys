@@ -24,7 +24,7 @@ header h1 {
   margin: 0 0 40px 0;
 }
 
-header .actions img {
+img {
   display: block;
   width: 85px;
   height: 85px;
@@ -78,6 +78,34 @@ a:hover {
   color: #89e389;
 }
 
+button,
+.actions a.cancel {
+  font-size: inherit;
+  font-family: inherit;
+  margin: 20px;
+  padding: 10px 20px;
+  border: 1px solid #8092b1;
+  border-radius: 5px;
+  background-color: #c1d1f6;
+  cursor: pointer;
+}
+
+button:hover,
+.actions a.cancel:hover {
+  background-color: #b0c1e4;
+  color: inherit;
+}
+
+form dd input,
+form dd select {
+  font-size: 18px;
+  width: 100%;
+  height: 100%;
+  padding: 5px 10px;
+  border: 1px solid #d6d3d3;
+  border-radius: 5px;
+}
+
 /* ===== Sign up / Sign in page ===== */
 
 form {
@@ -107,35 +135,8 @@ form dd label {
   text-align: center;
 }
 
-form dd input {
-  font-size: 18px;
-  width: 100%;
-  height: 100%;
-  padding: 5px 10px;
-  border: 1px solid #d6d3d3;
-  border-radius: 5px;
-}
-
 form .actions {
   margin: 20px 0 60px;
-}
-
-.actions button,
-.actions a.cancel {
-  font-size: inherit;
-  font-family: inherit;
-  margin: 20px;
-  padding: 10px 20px;
-  border: 1px solid #8092b1;
-  border-radius: 5px;
-  background-color: #c1d1f6;
-  cursor: pointer;
-}
-
-.actions button:hover,
-.actions a.cancel:hover {
-  background-color: #b0c1e4;
-  color: inherit;
 }
 
 /* ===== List of surveys page / Dashboard ===== */
@@ -166,6 +167,62 @@ form .actions {
 
 .survey_details h2 {
   font-size: 28px;
+}
+
+/* ===== Survey Page ===== */
+
+header h2 {
+  font-size: 28px;
+}
+
+form.edit {
+  padding: 0;
+  margin: 0;
+}
+
+#questions {
+  margin: 0 0 30px 0;
+}
+
+#questions + img {
+  transform: rotate(180deg);
+  margin-bottom: 20px;
+}
+
+.add_question {
+  display: none;
+  background-color: #c9d6f7;
+  width: 90%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+#overlay {
+  display: none;
+  background-color: #8092b1;
+  opacity: .9;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.add_question input {
+  width: 80%;
+}
+
+.add_question select {
+  width: 30%;
+  text-align: center;
+}
+
+.publish {
+  margin: 0 0 40px;
 }
 
 /* #questions li {
@@ -211,6 +268,14 @@ form.delete {
     margin-right: 30px;
     margin-left: 30px;
   }
+
+  .add_question {
+    width: 80%;
+  }
+
+  .add_question select {
+    width: 30%;
+  }
 }
 
 @media screen and (min-width: 961px) {
@@ -218,11 +283,27 @@ form.delete {
   form dd input {
     width: 50%;
   }
+
+  .add_question {
+    width: 80%;
+  }
+
+  .add_question select {
+    width: 20%;
+  }
 }
 
 @media screen and (min-width: 1501px) {
   /* CSS for large laptop and desktop displays */
   form dd input {
     width: 30%;
+  }
+
+  .add_question {
+    width: 60%;
+  }
+
+  .add_question select {
+    width: 15%;
   }
 }
