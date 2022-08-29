@@ -5,18 +5,21 @@ block main
     h2= survey.title
     if !survey.published
       form.edit(action=`/surveys/${survey.id}/edit` method="get")
-        button(type="submit") Edit
+        button(type="submit")
+          img(src="../images/pencil.png")
 
   ul#questions
     if survey.questions.length === 0
       p There are no questions in this survey.
     else
+      h3 Questions
       each question in survey.questions
         li
           p= question.question_text
           if !survey.published
             form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
-              button(type="submit") Edit
+              button(type="submit")
+                img(src="../images/pencil.png")
           else
             form(action=`/surveys/${survey.id}/questions/${question.id}/results` method="get")
               button(type="submit") Answers
