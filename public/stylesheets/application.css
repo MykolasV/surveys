@@ -19,6 +19,10 @@ header {
   margin: 100px 0 20px 0;
 }
 
+main header {
+  margin: 20px 0;
+}
+
 header h1 {
   font-size: 60px;
   margin: 0 0 40px 0;
@@ -110,6 +114,75 @@ form dd select {
   border-radius: 5px;
 }
 
+header h2 {
+  display: inline-block;
+  font-size: 28px;
+}
+
+form.edit,
+.edit_form_link,
+form.delete {
+  display: inline-block;
+  padding: 0 0 0 20px;
+}
+
+form.edit button,
+form.delete button {
+  background-color: inherit;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+form.edit img,
+.edit_form_link img {
+  width: 17px;
+  height: 17px;;
+}
+
+form.delete button img {
+  width: 18px;
+  height: 18px;;
+}
+
+p {
+  display: inline-block;
+}
+
+.add_question,
+.edit_question {
+  display: none;
+  background-color: #c9d6f7;
+  width: 90%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+.overlay {
+  display: none;
+  background-color: #8092b1;
+  opacity: .9;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.add_question input {
+  width: 80%;
+}
+
+.add_question select,
+.edit_question select {
+  width: 30%;
+  text-align: center;
+}
+
 /* ===== Sign up / Sign in page ===== */
 
 form {
@@ -175,28 +248,6 @@ form .actions {
 
 /* ===== Survey Page ===== */
 
-header h2 {
-  display: inline-block;
-  font-size: 28px;
-}
-
-form.edit {
-  display: inline-block;
-  padding: 0 0 0 10px;
-}
-
-form.edit button {
-  background-color: inherit;
-  padding: 0;
-  margin: 0;
-  border: none;
-}
-
-form.edit button img {
-  width: 17px;
-  height: 17px;;
-}
-
 #questions {
   margin: 0 0 30px 0;
 }
@@ -210,36 +261,9 @@ form.edit button img {
   margin-bottom: 20px;
 }
 
-.add_question {
-  display: none;
-  background-color: #c9d6f7;
-  width: 90%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-}
-
-#overlay {
-  display: none;
-  background-color: #8092b1;
-  opacity: .9;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 2;
-}
-
-.add_question input {
-  width: 80%;
-}
-
-.add_question select {
-  width: 30%;
-  text-align: center;
+#add_form_link {
+  display: block;
+  margin: 60px 0 0;
 }
 
 .publish {

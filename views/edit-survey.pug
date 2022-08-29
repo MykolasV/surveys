@@ -4,7 +4,8 @@ block main
   header
     h2 Editing '#{survey.title}'
     form.delete(action=`/surveys/${survey.id}/destroy` method="post")
-      button(type="submit") Delete Survey
+      button(type="submit")
+        img(src="../../images/trash.png")
 
   form(action=`/surveys/${survey.id}/edit` method="post")
     dl
@@ -16,5 +17,5 @@ block main
               placeholder="Survey Title"
               value=surveyTitle || survey.title)
     fieldset.actions
-      input(type="submit" value="Save")
-      a(href=`/surveys/${survey.id}`) Cancel
+      button(type="submit") Save
+      a.cancel(href=`/surveys/${survey.id}`) Cancel

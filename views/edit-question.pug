@@ -2,11 +2,13 @@ extends layout
 
 block main
   header
-    h2 Edit Question:
+    h2 Edit:
+    br
     p #{question}
     form.delete(action=`/surveys/${surveyId}/questions/${questionId}/destroy`
                 method="post")
-      button(type="submit") Delete Question
+      button(type="submit")
+        img(src="../../../images/trash.png")
 
   form(action=`/surveys/${surveyId}/questions/${questionId}` method="post")
     dl

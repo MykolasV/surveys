@@ -17,22 +17,63 @@ block main
         li
           p= question.question_text
           if !survey.published
-            form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
+            //- form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
+            //-   button(type="submit")
+            //-     img(src="../images/pencil.png")
+            a(href="#" class="edit_form_link ")
+              img(src="../images/pencil.png")
+            .edit_question
+              form(action=`/surveys/${survey.id}/questions/${question.id}` method="post")
+                dl
+                  dt 
+                    label(for="type") Type
+                  dd 
+                    select(name=`questionType-${question.id}` id=`questionType-${question.id}`)
+                      if question.question_type === "closed"
+                        option(value="closed" selected) Closed
+                      else
+                        option(value="closed") Closed
+
+                      if question.question_type === "nominal"
+                        option(value="nominal" selected) Nominal 
+                      else
+                        option(value="nominal") Nominal
+
+                      if question.question_type === "open"
+                        option(value="open" selected) Open
+                      else
+                        option(value="open") Open
+                  dt
+                    label(for="question") Question 
+                  dd
+                    input(type="text"
+                          name="questionText"
+                          id="questionText"
+                          placeholder="question..."
+                          value=question.question_text)
+                  dt 
+                    label(for="options") Options
+                  dd
+                    input(type="text"
+                          name="options"
+                          id="options"
+                          placeholder="option1, option2, option3..."
+                          value=(question.options || []).join(', '))
+                button(type="submit") Add
+                button.cancel(type="button") Cancel
+            .overlay
+
+            form.delete(action=`/surveys/${survey.id}/questions/${question.id}/destroy` method="post")
               button(type="submit")
-                img(src="../images/pencil.png")
+                img(src="../images/trash.png")
           else
             form(action=`/surveys/${survey.id}/questions/${question.id}/results` method="get")
               button(type="submit") Answers
 
   if !survey.published
-    if survey.questions.length > 0
-      form.publish(action=`/surveys/${survey.id}/publish` method="post")
-        button(type="submit") Publish Survey
-    
     if survey.questions === undefined || survey.questions.length === 0
       image(src="../images/up-arrow.png")
-    a(href="#" id="form_link") Add Question
-
+    a(href="#" id="add_form_link") Add Question
     .add_question
       form(action=`/surveys/${survey.id}/questions` method="post")
         dl
@@ -72,12 +113,16 @@ block main
                   value=options || "")
         button(type="submit") Add
         button.cancel(type="button") Cancel
-    #overlay
+    .overlay
+
+    if survey.questions.length > 0
+      form.publish(action=`/surveys/${survey.id}/publish` method="post")
+        button(type="submit") Publish
 
   else
     a(href=`/surveys/published/${survey.id}/start` target='_blank') Link to Survey
     form.unpublish(action=`/surveys/${survey.id}/unpublish` method="post")
-      button(type="submit") Unpublish Survey
+      button(type="submit") Unpublish
 
 block headerLinks
   .actions
