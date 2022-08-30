@@ -19,10 +19,6 @@ header {
   margin: 100px 0 20px 0;
 }
 
-main header {
-  margin: 20px 0;
-}
-
 header h1 {
   font-size: 60px;
   margin: 0 0 40px 0;
@@ -32,11 +28,16 @@ h3 {
   padding: 0 0 20px 0;
 }
 
-.actions img {
+header .actions {
+  margin: 20px 0 0 0;
+}
+
+.actions img,
+main > img {
   display: block;
   width: 85px;
   height: 85px;
-  margin: 0 auto;
+  margin: 20px auto;
   position: relative;
   animation: move-up-down 2s linear infinite;
 }
@@ -51,22 +52,58 @@ h3 {
   }
 }
 
-header .actions {
-  margin: 20px 0 0 0;
-}
-
 main {
   width: 100%;
-  padding: 0 60px;
+  padding: 0 15px;
+}
+
+main header {
+  margin: 20px 0;
 }
 
 a {
   text-decoration: none;
+  color: inherit
+}
+
+a.signin:hover,
+a.signup:hover {
+  color: #8092b1;
+}
+
+.actions a,
+a#add_form_link,
+button,
+header form.edit,
+header form.delete {
+  padding: 10px;
+  border: 1px solid #8092b1;
+  border-radius: 5px;
+  background-color: #c1d1f6;
+  cursor: pointer;
+}
+
+button {
+  font-size: inherit;
+  font-family: inherit;
+  margin: 20px;
+  padding: 10px 20px;
+}
+
+.actions a:hover,
+a#add_form_link:hover,
+button:hover,
+header form.edit:hover,
+header form.delete:hover {
+  background-color: #b0c1e4;
   color: inherit;
 }
 
-a:hover {
-  color: #8092b1;
+header form.edit,
+header form.delete {
+  display: inline-block;
+  margin: 0 0 0 20px;
+  padding: 2px 5px;
 }
 
 .flash {
@@ -86,24 +123,6 @@ a:hover {
   color: #89e389;
 }
 
-button,
-.actions a.cancel {
-  font-size: inherit;
-  font-family: inherit;
-  margin: 20px;
-  padding: 10px 20px;
-  border: 1px solid #8092b1;
-  border-radius: 5px;
-  background-color: #c1d1f6;
-  cursor: pointer;
-}
-
-button:hover,
-.actions a.cancel:hover {
-  background-color: #b0c1e4;
-  color: inherit;
-}
-
 form dd input,
 form dd select {
   font-size: 18px;
@@ -117,13 +136,6 @@ form dd select {
 header h2 {
   display: inline-block;
   font-size: 28px;
-}
-
-form.edit,
-.edit_form_link,
-form.delete {
-  display: inline-block;
-  padding: 0 0 0 20px;
 }
 
 form.edit button,
@@ -237,6 +249,10 @@ form .actions {
   padding: 0 20px;
 }
 
+#surveys_list li a:hover {
+  color: #8092b1;
+}
+
 .survey_details h2, .survey_details p {
   display: block;
   margin: 20px 0;
@@ -248,21 +264,55 @@ form .actions {
 
 /* ===== Survey Page ===== */
 
-#questions {
-  margin: 0 0 30px 0;
+header form.edit {
+  display: inline;
+  padding: 2px 5px;
 }
 
-#questions p {
+#questions {
+  margin: 0 0 60px 0;
+}
+
+#questions li {
+  width: 100%;
+  padding: 10px;
+  margin: 0 auto 25px;
+  border-radius: 6px;
+  background-color: #c9d6f7;
+}
+
+#questions li p {
   display: inline-block;
+  text-align: left;
+  width: 70%;
+  margin: 0 20px 0 0;
+}
+
+#questions a.edit_form_link,
+#questions form.delete {
+  display: inline-block;
+  background-color: inherit;
+  padding: 2px 5px;
+  margin: 0;
+  border: none;
+  border-radius: 5px;
+}
+
+#questions a.edit_form_link {
+  margin-right: 10px;
+}
+
+#questions a.edit_form_link:hover,
+#questions form.delete:hover {
+  background-color: #acbfef;
 }
 
 #questions + img {
   transform: rotate(180deg);
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 #add_form_link {
-  display: block;
   margin: 60px 0 0;
 }
 
@@ -321,6 +371,10 @@ form.delete {
   .add_question select {
     width: 30%;
   }
+
+  #questions li {
+    width: 90%;
+  }
 }
 
 @media screen and (min-width: 961px) {
@@ -336,6 +390,14 @@ form.delete {
   .add_question select {
     width: 20%;
   }
+
+  /* #questions p {
+    width: 60%;
+  } */
+
+  #questions li {
+    width: 70%;
+  }
 }
 
 @media screen and (min-width: 1501px) {
@@ -350,5 +412,13 @@ form.delete {
 
   .add_question select {
     width: 15%;
+  }
+
+  /* #questions p {
+    width: 50%;
+  } */
+
+  #questions li {
+    width: 50%;
   }
 }

@@ -17,9 +17,6 @@ block main
         li
           p= question.question_text
           if !survey.published
-            //- form.edit(action=`/surveys/${survey.id}/questions/${question.id}` method="get")
-            //-   button(type="submit")
-            //-     img(src="../images/pencil.png")
             a(href="#" class="edit_form_link ")
               img(src="../images/pencil.png")
             .edit_question
