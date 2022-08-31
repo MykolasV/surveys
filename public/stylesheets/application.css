@@ -103,7 +103,7 @@ header form.edit,
 header form.delete {
   display: inline-block;
   margin: 0 0 0 20px;
-  padding: 2px 5px;
+  padding: 0;
 }
 
 .flash {
@@ -141,7 +141,7 @@ header h2 {
 form.edit button,
 form.delete button {
   background-color: inherit;
-  padding: 0;
+  padding: 2px 5px;
   margin: 0;
   border: none;
 }
@@ -265,11 +265,6 @@ form .actions {
 
 /* ===== Survey Page ===== */
 
-header form.edit {
-  display: inline;
-  padding: 2px 5px;
-}
-
 #questions {
   margin: 0 0 60px 0;
 }
@@ -289,11 +284,18 @@ header form.edit {
   margin: 0 20px 0 0;
 }
 
-#questions a.edit_form_link,
-#questions form.delete {
+#questions a.edit_form_link {
   display: inline-block;
   background-color: inherit;
   padding: 2px 5px;
+  margin: 0;
+  border: none;
+  border-radius: 5px;
+}
+
+#questions form.delete {
+  display: inline-block;
+  padding: 0;
   margin: 0;
   border: none;
   border-radius: 5px;
