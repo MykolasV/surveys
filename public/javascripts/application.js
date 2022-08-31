@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
       li.querySelector(".edit_question").style.display = "none";
       target.style.display = "none";
     }
+
+    li.querySelector("form select").focus();
   });
 
   document.querySelector("#add_form_link").addEventListener("click", event => {
@@ -44,6 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let targetParent = event.target.parentElement;
     targetParent.querySelector(".add_question").style.display = "block";
     targetParent.querySelector(".overlay").style.display = "block";
+
+    targetParent.querySelector(".add_question form select").focus();
   });
 
   document.querySelector("main .overlay").addEventListener("click", event => {
@@ -59,30 +63,4 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector(".add_question").style.display = "none";
     document.querySelector("main .overlay").style.display = "none";
   });
-
-  
-
-  // let formContainer = document.querySelector(".add_question");
-  // let formOverlay = document.querySelector("#overlay");
-
-  // document.querySelectorAll("#add_form_link, .edit_form_link").forEach(element => {
-  //   element.addEventListener("click", event => {
-  //     event.preventDefault();
-  
-
-  //     formContainer.style.display = "block";
-  //     formOverlay.style.display = "block";
-  //   });
-  // });
-
-  // document.querySelectorAll("button.cancel, .overlay").forEach(element => {
-  //   element.addEventListener("click", event => {
-  //     console.log(event);
-  //     event.preventDefault();
-  //     event.stopPropagation();
-
-  //     formContainer.style.display = "none";
-  //     formOverlay.style.display = "none";
-  //   });
-  // });
 });
