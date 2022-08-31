@@ -67,7 +67,9 @@ a {
 }
 
 a.signin:hover,
-a.signup:hover {
+a.signup:hover,
+a.survey_link:hover,
+a.start_survey:hover {
   color: #8092b1;
 }
 
