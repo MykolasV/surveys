@@ -5,11 +5,12 @@ CREATE TABLE users (
 
 CREATE TABLE surveys (
   id serial PRIMARY KEY,
-  title text NOT NULL UNIQUE CHECK (length(trim(title)) > 0),
+  title text NOT NULL CHECK (length(trim(title)) > 0),
   username text NOT NULL REFERENCES users (username) ON DELETE CASCADE,
   published boolean NOT NULL DEFAULT false,
   created_on timestamptz NOT NULL DEFAULT now(),
-  published_on timestamptz
+  published_on timestamptz,
+  UNIQUE (username, title)
 );
 
 CREATE TABLE questions (
