@@ -4,5 +4,6 @@ block headerLinks
 
 block signIn
 
-block main 
-  a(href=`/surveys/published/${surveyId}`) Start the Survey!
+block main
+  a.start_survey(href=`/surveys/published/${surveyId}`) Start the Survey!
+  img(src="../../../images/up-arrow.png")
