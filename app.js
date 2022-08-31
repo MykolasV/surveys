@@ -421,28 +421,36 @@ app.get("/users/signup", (req, res) => {
 
 // Handle Sign Up form submission
 app.post("/users/signup",
+  [
+    body("username")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Username is required.")
+      .isLength({ min: 6, max: 50 })
+      .withMessage("Username must be between 6 and 50 characters."),
+    body("password")
+      .isLength({ min: 1 })
+      .withMessage("Password is required.")
+      .isLength({ min: 6, max: 15 })
+      .withMessage("Password must be between 6  and 15 characters.")
+  ],
   catchError(async (req, res) => {
     let store = res.locals.store;
     let username = req.body.username.trim();
     let password = req.body.password;
 
-    if (await store.existsUsername(username)) {
-      req.flash("error", "Username exists. Please pick a different username.");
-      res.render("signup", {
-        flash: req.flash(),
-      });
-    } else if (password.length < 6) {
-      req.flash("error", "The password must be at least 6 characters long.");
-      res.render("signup", {
-        flash: req.flash(),
-        username,
-      });
-    } else if (password.length > 15) {
-      req.flash("error", "The password must be no longer than 15 characters.");
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      errors.array().forEach(message => req.flash("error", message.msg));
       res.render("signup", {
         flash: req.flash(),
         username,
       })
+    } else if (await store.existsUsername(username)) {
+      req.flash("error", "Username exists. Please pick a different username.");
+      res.render("signup", {
+        flash: req.flash(),
+      });
     } else {
       let createdAccount = await store.saveUser(username, password);
       if (!createdAccount) throw new Error("Not Found.");
