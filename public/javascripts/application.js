@@ -21,12 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   questions.addEventListener("click", event => {
-    event.preventDefault();
-
     let target = event.target;
     let li = target.closest("li");
 
     if (target.closest(".edit_form_link")) {
+      event.preventDefault();
       li.querySelector(".edit_question").style.display = "block";
       li.querySelector(".overlay").style.display = "block";
     } else if (target.classList.contains("cancel")) {
@@ -58,8 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.querySelector(".add_question button.cancel").addEventListener("click", event => {
-    event.preventDefault();
-
     document.querySelector(".add_question").style.display = "none";
     document.querySelector("main .overlay").style.display = "none";
   });
