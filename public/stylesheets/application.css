@@ -143,7 +143,8 @@ header form.delete {
 }
 
 form dd input,
-form dd select {
+form dd select,
+form dd textarea {
   font-size: 18px;
   width: 100%;
   height: 100%;
@@ -364,6 +365,42 @@ form .actions {
   margin: 0;
 }
 
+/* ===== Survey Form */
+
+.submit_survey {
+  padding: 10px 0 0;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.submit_survey dl {
+  padding: 0;
+}
+
+.submit_survey dt,
+.submit_survey dd {
+  height: auto;
+}
+
+.submit_survey dd {
+  margin-bottom: 60px;
+}
+
+.submit_survey label,
+.submit_survey input {
+  display: inline-block;
+  width: auto;
+}
+
+.submit_survey label {
+  margin: 0 10px;
+}
+
+.submit_survey button {
+  display: block;
+  margin: 0 auto 60px;
+}
+
 @media screen and (min-width: 481px) {
   /* CSS for tablets and larger */
 }
@@ -397,6 +434,10 @@ form .actions {
   main p {
     width: 70%;
   }
+
+  .submit_survey {
+    width: 90%;
+  }
 }
 
 @media screen and (min-width: 961px) {
@@ -417,6 +458,10 @@ form .actions {
   }
 
   #questions li {
+    width: 70%;
+  }
+
+  .submit_survey {
     width: 70%;
   }
 }
@@ -443,6 +488,10 @@ form .actions {
   }
 
   #questions li {
+    width: 50%;
+  }
+
+  .submit_survey {
     width: 50%;
   }
 }

@@ -5,24 +5,25 @@ block headerLinks
 block signIn
 
 block main
-  h3= survey.title
+  h2= survey.title
 
-  form(action=`/surveys/published/${survey.id}` method="post")
+  form.submit_survey(action=`/surveys/published/${survey.id}` method="post")
     fieldset 
       dl 
-        each question in survey.questions
-          dt
-            label(for=`question-${question.id}`) #{question.question_text}
-          dd 
-            if question.question_type === 'open'
-              textarea(name=`${question.id}` id=`question-${question.id}`)
-            else if question.question_type === 'closed'
-              each option in question.options
-                input(type="radio" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
-                label(for=`option-${option.id}`) #{option.option_value}
-            else if question.question_type === 'nominal'
-              each option in question.options 
-                input(type="checkbox" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
-                label(for=`option-${option.id}`) #{option.option_value}
+        each question, index in survey.questions
+          - let idx =`${index + 1}/${survey.questions.length}`
+            dt
+              label(for=`question-${question.id}`) #{idx} - #{question.question_text}
+            dd 
+              if question.question_type === 'open'
+                textarea(name=`${question.id}` id=`question-${question.id}` rows="6" cols="33")
+              else if question.question_type === 'closed'
+                each option in question.options
+                  input(type="radio" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
+                  label(for=`option-${option.id}`) #{option.option_value}
+              else if question.question_type === 'nominal'
+                each option in question.options 
+                  input(type="checkbox" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
+                  label(for=`option-${option.id}`) #{option.option_value}
 
     button(type="submit") Submit
