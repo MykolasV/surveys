@@ -325,6 +325,27 @@ form .actions {
   margin: 0 0 40px;
 }
 
+/* ===== Published Survey Page */
+
+#questions.published li p {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  text-align: left;
+}
+
+#questions.published li form {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30%;
+  text-align: right;
+  padding: 0;
+}
+
+#questions.published form button {
+  margin: 0;
+}
+
 @media screen and (min-width: 481px) {
   /* CSS for tablets and larger */
 }

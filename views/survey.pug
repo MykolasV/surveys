@@ -8,7 +8,7 @@ block main
         button(type="submit")
           img(src="../images/pencil.png")
 
-  ul#questions
+  ul#questions(class=`${survey.published ? "published" : ""}`)
     if survey.questions.length === 0
       p There are no questions in this survey.
     else
