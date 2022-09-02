@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (element.classList.contains("delete")) {
         message = "Are you sure? This cannot be undone!";
       } else if (element.classList.contains("unpublish")) {
-        message = "Are you sure? All survey data will be lost!";
+        message = "Are you sure? All of the answers will be lost!";
       }
 
       if (confirm(message)) {
