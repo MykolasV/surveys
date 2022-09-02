@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
       li.querySelector(".edit_question").style.display = "block";
       li.querySelector(".overlay").style.display = "block";
+      li.querySelector("form select").focus();
     } else if (target.classList.contains("cancel")) {
       li.querySelector(".edit_question").style.display = "none";
       li.querySelector(".edit_question").nextElementSibling.style.display = "none";
@@ -35,8 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
       li.querySelector(".edit_question").style.display = "none";
       target.style.display = "none";
     }
-
-    li.querySelector("form select").focus();
   });
 
   document.querySelector("#add_form_link").addEventListener("click", event => {
