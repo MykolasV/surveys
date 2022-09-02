@@ -19,13 +19,25 @@ header {
   margin: 100px 0 20px 0;
 }
 
-header h1 {
+h1 {
   font-size: 60px;
   margin: 0 0 40px 0;
 }
 
+h2 {
+  font-size: 38px;
+  margin: 0 auto 20px;
+}
+
 h3 {
+  font-size: 28px;
   padding: 0 0 20px 0;
+}
+
+header h2 {
+  display: inline-block;
+  width: auto;
+  margin: 0;
 }
 
 header .actions {
@@ -133,11 +145,6 @@ form dd select {
   padding: 5px 10px;
   border: 1px solid #d6d3d3;
   border-radius: 5px;
-}
-
-header h2 {
-  display: inline-block;
-  font-size: 28px;
 }
 
 form.edit button,
@@ -261,8 +268,10 @@ form .actions {
   margin: 20px 0;
 }
 
-.survey_details h2 {
+.survey_details h3 {
   font-size: 28px;
+  padding: 0;
+  margin: 0 auto;
 }
 
 /* ===== Survey Page ===== */
@@ -370,6 +379,10 @@ form .actions {
 
   #questions li {
     width: 90%;
+  }
+
+  h2 {
+    width: 70%;
   }
 }
 

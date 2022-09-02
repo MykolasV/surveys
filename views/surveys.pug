@@ -10,7 +10,7 @@ block main
           li.published
             a(href=`/surveys/${survey.id}`)
               .survey_details
-                h2= survey.title
+                h3= survey.title
                 p Questions: #{survey.numberOfQuestions}
                 p Participants: #{survey.numberOfParticipants}
                 p Published
@@ -18,7 +18,7 @@ block main
           li.unpublished
             a(href=`/surveys/${survey.id}`)
               .survey_details
-                h2= survey.title
+                h3= survey.title
                 p Questions: #{survey.numberOfQuestions}
                 p Unpublished
 
