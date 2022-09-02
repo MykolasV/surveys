@@ -32,6 +32,7 @@ h2 {
 h3 {
   font-size: 28px;
   padding: 0 0 20px 0;
+  margin: 20px 0 0;
 }
 
 header h2 {
@@ -71,6 +72,10 @@ main {
 
 main header {
   margin: 20px 0;
+}
+
+p {
+  display: inline-block;
 }
 
 a {
@@ -164,10 +169,6 @@ form.edit img,
 form.delete button img {
   width: 18px;
   height: 18px;;
-}
-
-p {
-  display: inline-block;
 }
 
 .add_question,
@@ -264,9 +265,9 @@ form .actions {
   color: #8092b1;
 }
 
-.survey_details h2, .survey_details p {
+.survey_details p {
   display: block;
-  margin: 20px 0;
+  margin: 20px auto;
 }
 
 .survey_details h3 {
@@ -294,7 +295,6 @@ form .actions {
   display: inline-block;
   text-align: left;
   width: 70%;
-  /* margin: 0 20px 0 0; */
   margin: 0;
 }
 
@@ -391,6 +391,10 @@ form .actions {
   }
 
   h2 {
+    width: 70%;
+  }
+
+  main p {
     width: 70%;
   }
 }
