@@ -153,6 +153,10 @@ form dd textarea {
   border-radius: 5px;
 }
 
+textarea {
+  resize: none;
+}
+
 form.edit button,
 form.delete button {
   background-color: inherit;
