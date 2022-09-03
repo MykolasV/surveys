@@ -19,11 +19,13 @@ block main
                 textarea(name=`${question.id}` id=`question-${question.id}` rows="6" cols="33")
               else if question.question_type === 'closed'
                 each option in question.options
-                  input(type="radio" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
-                  label(for=`option-${option.id}`) #{option.option_value}
+                  .wrapper
+                    input(type="radio" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
+                    label(for=`option-${option.id}`) #{option.option_value}
               else if question.question_type === 'nominal'
-                each option in question.options 
-                  input(type="checkbox" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
-                  label(for=`option-${option.id}`) #{option.option_value}
+                each option in question.options
+                  .wrapper
+                    input(type="checkbox" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
+                    label(for=`option-${option.id}`) #{option.option_value}
 
     button(type="submit") Submit
