@@ -396,13 +396,17 @@ form .actions {
   width: auto;
 }
 
-.submit_survey label {
+.submit_survey dd label {
   margin: 0 10px;
 }
 
 .submit_survey button {
   display: block;
   margin: 0 auto 60px;
+}
+
+.wrapper {
+  display: inline-block;
 }
 
 /* ===== Results Page ===== */
