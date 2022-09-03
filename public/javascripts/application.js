@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const questions = document.querySelector("#questions");
+  const addFormLink = document.querySelector("#add_form_link");
+  const addQuestionOverlay = document.querySelector("main .overlay");
+  const cancelAddQuestion = document.querySelector(".add_question button.cancel");
 
   document.querySelectorAll("form.delete, form.unpublish").forEach(form => {
     form.addEventListener("submit", event => {
@@ -20,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  questions.addEventListener("click", event => {
+  questions && questions.addEventListener("click", event => {
     let target = event.target;
     let li = target.closest("li");
 
@@ -38,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  document.querySelector("#add_form_link").addEventListener("click", event => {
+  addFormLink && addFormLink.addEventListener("click", event => {
     event.preventDefault();
 
     let targetParent = event.target.parentElement;
@@ -48,14 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
     targetParent.querySelector(".add_question form select").focus();
   });
 
-  document.querySelector("main .overlay").addEventListener("click", event => {
+  addQuestionOverlay && addQuestionOverlay.addEventListener("click", event => {
     let target = event.target;
 
     document.querySelector(".add_question").style.display = "none";
     target.style.display = "none";
   });
 
-  document.querySelector(".add_question button.cancel").addEventListener("click", event => {
+  cancelAddQuestion && cancelAddQuestion.addEventListener("click", event => {
     document.querySelector(".add_question").style.display = "none";
     document.querySelector("main .overlay").style.display = "none";
   });
