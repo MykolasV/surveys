@@ -344,7 +344,7 @@ form .actions {
   width: 30%;
 }
 
-/* ===== Published Survey Page */
+/* ===== Published Survey Page ===== */
 
 #questions.published li p {
   display: inline-block;
@@ -365,7 +365,7 @@ form .actions {
   margin: 0;
 }
 
-/* ===== Survey Form */
+/* ===== Survey Form ===== */
 
 .submit_survey {
   padding: 10px 0 0;
@@ -399,6 +399,17 @@ form .actions {
 .submit_survey button {
   display: block;
   margin: 0 auto 60px;
+}
+
+/* ===== Results Page ===== */
+
+span.answer,
+span.option {
+  display: block;
+  padding: 10px;
+  margin: 0 auto 10px;
+  border-radius: 8px;
+  background-color: #c9d6f7;
 }
 
 @media screen and (min-width: 481px) {
@@ -438,6 +449,11 @@ form .actions {
   .submit_survey {
     width: 90%;
   }
+
+  span.answer,
+  span.option {
+    width: 80%;
+  }
 }
 
 @media screen and (min-width: 961px) {
@@ -463,6 +479,11 @@ form .actions {
 
   .submit_survey {
     width: 70%;
+  }
+
+  span.answer,
+  span.option {
+    width: 60%;
   }
 }
 
@@ -493,5 +514,10 @@ form .actions {
 
   .submit_survey {
     width: 50%;
+  }
+
+  span.answer,
+  span.option {
+    width: 40%;
   }
 }

@@ -10,10 +10,10 @@ block main
       each answer in results.answers
         if results.question_type === 'open'
           li
-            span= answer
+            span.answer= answer
         else
           li
-            span #{answer.option}: #{answer.percentage}%
+            span.option #{answer.option}: #{answer.percentage}%
 
 block headerLinks 
   .actions 
