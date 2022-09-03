@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const addFormLink = document.querySelector("#add_form_link");
   const addQuestionOverlay = document.querySelector("main .overlay");
   const cancelAddQuestion = document.querySelector(".add_question button.cancel");
+  const submitSurveyForm = document.querySelector(".submit_survey");
 
   document.querySelectorAll("form.delete, form.unpublish").forEach(form => {
     form.addEventListener("submit", event => {
@@ -61,5 +62,44 @@ document.addEventListener('DOMContentLoaded', () => {
   cancelAddQuestion && cancelAddQuestion.addEventListener("click", event => {
     document.querySelector(".add_question").style.display = "none";
     document.querySelector("main .overlay").style.display = "none";
+  });
+
+  submitSurveyForm && submitSurveyForm.addEventListener("submit", event => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    submitSurveyForm.querySelectorAll("dd").forEach(dd => {
+      let dt = dd.previousElementSibling;
+      let label = dt.querySelector("label");
+      let requiredMessage = dt.querySelector(".required");
+      let input = dd.querySelector("input, textarea");
+
+      if (input.tagName === "INPUT") {
+        if ([...dd.querySelectorAll("input")].every(input => input.checked === false)) {
+          requiredMessage || label.insertAdjacentHTML("afterend", "<span class='required'>*required</span>");
+        } else {
+          requiredMessage && requiredMessage.remove();
+        }
+      } else if (input.tagName === "TEXTAREA") {
+        if (input.value.trim() === "") {
+          requiredMessage || label.insertAdjacentHTML("afterend", "<span class='required'>*required</span>");
+        } else {
+          requiredMessage && requiredMessage.remove();
+        }
+      }
+    });
+
+    if (submitSurveyForm.querySelector(".required")) {
+      if (document.querySelector("body header ul li.error")) return;
+
+      let ul = document.createElement("ul");
+      let li = document.createElement("li");
+      li.classList.add("error");
+      li.textContent = "Please answer all of the questions.";
+      ul.append(li);
+      document.querySelector("body header").append(ul);
+    } else {
+      submitSurveyForm.submit();
+    }
   });
 });

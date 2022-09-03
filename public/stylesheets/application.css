@@ -396,6 +396,10 @@ form .actions {
   width: auto;
 }
 
+.submit_survey dt label {
+  margin: 0 10px 0 0;
+}
+
 .submit_survey dd label {
   margin: 0 10px;
 }
@@ -407,6 +411,10 @@ form .actions {
 
 .wrapper {
   display: inline-block;
+}
+
+.required {
+  color: red;
 }
 
 /* ===== Results Page ===== */
