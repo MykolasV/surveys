@@ -1,31 +1,40 @@
-extends layout
+doctype html
 
-block headerLinks
+html(lang="en-GB")
 
-block signIn
+  head
+    title Survey
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans")
+    link(rel="stylesheet" href="/stylesheets/whitespace-reset.css")
+    link(rel="stylesheet" href="/stylesheets/application.css")
+    script(src="/javascripts/application.js")
 
-block main
-  h2= survey.title
+  body
+    header 
+      p Please answer the following questions.
 
-  form.submit_survey(action=`/surveys/published/${survey.id}` method="post")
-    fieldset 
-      dl 
-        each question, index in survey.questions
-          - let idx =`${index + 1}/${survey.questions.length}`
-            dt
-              label(for=`question-${question.id}`) #{idx} - #{question.question_text}
-            dd 
-              if question.question_type === 'open'
-                textarea(name=`${question.id}` id=`question-${question.id}` rows="6" cols="33")
-              else if question.question_type === 'closed'
-                each option in question.options
-                  .wrapper
-                    input(type="radio" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
-                    label(for=`option-${option.id}`) #{option.option_value}
-              else if question.question_type === 'nominal'
-                each option in question.options
-                  .wrapper
-                    input(type="checkbox" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
-                    label(for=`option-${option.id}`) #{option.option_value}
+    main
+      form.submit_survey(action=`/surveys/published/${survey.id}` method="post")
+        fieldset 
+          dl 
+            each question, index in survey.questions
+              - let idx =`${index + 1}/${survey.questions.length}`
+                dt
+                  label(for=`question-${question.id}`) #{idx} - #{question.question_text}
+                dd 
+                  if question.question_type === 'open'
+                    textarea(name=`${question.id}` id=`question-${question.id}` rows="6" cols="33")
+                  else if question.question_type === 'closed'
+                    each option in question.options
+                      .wrapper
+                        input(type="radio" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
+                        label(for=`option-${option.id}`) #{option.option_value}
+                  else if question.question_type === 'nominal'
+                    each option in question.options
+                      .wrapper
+                        input(type="checkbox" name=`${question.id}` id=`option-${option.id}` value=`${option.id}`)
+                        label(for=`option-${option.id}`) #{option.option_value}
 
-    button(type="submit") Submit
+        button(type="submit") Submit
