@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let ul = document.createElement("ul");
       let li = document.createElement("li");
       li.classList.add("error");
-      li.textContent = "Please answer all of the questions.";
+      li.textContent = "You must answer all of the required questions.";
       ul.append(li);
       document.querySelector("body header").append(ul);
     } else {
