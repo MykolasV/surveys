@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const surveysFilter = document.querySelector("#surveys_filter select");
   const questions = document.querySelector("#questions");
   const addFormLink = document.querySelector("#add_form_link");
   const addQuestionForm = document.querySelector(".add_question form");
@@ -23,6 +24,41 @@ document.addEventListener('DOMContentLoaded', () => {
         element.submit();
       }
     });
+  });
+
+  surveysFilter && surveysFilter.addEventListener("change", event => {
+    let message = document.querySelector("#surveys_filter + p");
+    if (message) message.remove();
+
+    let selected = [...surveysFilter.children].find(option => option.selected).value;
+    let surveys = [...document.querySelector("#surveys_list").children];
+    
+    if (selected === "all") {
+      surveys.forEach(survey => survey.style.display = "inline-block");
+    } else if (selected === "unpublished") {
+      surveys.forEach(survey => {
+        if (survey.classList.contains("unpublished")) {
+          survey.style.display = "inline-block";
+        } else {
+          survey.style.display = "none";
+        }
+      });
+    } else if (selected === "published") {
+      surveys.forEach(survey => {
+        if (survey.classList.contains("published")) {
+          survey.style.display = "inline-block";
+        } else {
+          survey.style.display = "none";
+        }
+      });
+    }
+
+    let filtered = surveys.filter(survey => survey.classList.contains(selected) || selected === "all");
+    if (filtered.every(survey => survey.style.display === "none")) {
+      let p = document.createElement("p");
+      p.textContent = "There are no surveys in this category.";
+      document.querySelector("#surveys_filter").insertAdjacentElement("afterend", p);
+    }
   });
 
   questions && questions.addEventListener("click", event => {

@@ -4,6 +4,13 @@ block main
   if surveys === undefined || surveys.length === 0
     p#no_list You don't have any surveys. Why not create one?
   else
+    #surveys_filter
+      label(for="filter") Show
+      select(name="filter" id="filter")
+        option(value="all" selected) All
+        option(value="unpublished") Unpublished 
+        option(value="published") Published
+
     ul#surveys_list
       each survey, surveyIndex in surveys
         if survey.published

@@ -302,6 +302,25 @@ form .actions {
   margin: 0 auto;
 }
 
+#surveys_filter {
+  margin: 0 0 40px;
+}
+
+#surveys_filter label {
+  margin: 0 10px 0 0;
+}
+
+#surveys_filter label,
+#surveys_filter select {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#surveys_filter select {
+  height: 26px;
+  border-radius: 6px;
+}
+
 /* ===== Survey Page ===== */
 
 #questions {
