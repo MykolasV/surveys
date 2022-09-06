@@ -24,9 +24,9 @@ block main
                 form(action=`/surveys/${survey.id}/questions/${question.id}` method="post")
                   dl
                     dt 
-                      label(for="type") Type
+                      label(for="questionType") Type
                     dd 
-                      select(name=`questionType-${question.id}` id=`questionType-${question.id}`)
+                      select(name=`questionType` id=`questionType`)
                         if question.question_type === "closed"
                           option(value="closed" selected) Closed
                         else
@@ -42,7 +42,7 @@ block main
                         else
                           option(value="open") Open
                     dt
-                      label(for="question") Question 
+                      label(for="questionText") Question 
                     dd
                       input(type="text"
                             name="questionText"
