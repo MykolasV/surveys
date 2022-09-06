@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const questions = document.querySelector("#questions");
   const addFormLink = document.querySelector("#add_form_link");
+  const addQuestionForm = document.querySelector(".add_question form");
   const addQuestionOverlay = document.querySelector("main .overlay");
   const cancelAddQuestion = document.querySelector(".add_question button.cancel");
   const submitSurveyForm = document.querySelector(".submit_survey");
@@ -57,11 +58,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector(".add_question").style.display = "none";
     target.style.display = "none";
+
+    let errors = addQuestionForm.querySelector("#errors");
+    if (errors) errors.remove();
+
+    addQuestionForm.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
   });
 
   cancelAddQuestion && cancelAddQuestion.addEventListener("click", event => {
     document.querySelector(".add_question").style.display = "none";
     document.querySelector("main .overlay").style.display = "none";
+
+    let errors = addQuestionForm.querySelector("#errors");
+    if (errors) errors.remove();
+
+    addQuestionForm.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+  });
+
+  addQuestionForm && addQuestionForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    let errors = addQuestionForm.querySelector("#errors");
+    if (errors) errors.remove();
+
+    addQuestionForm.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+
+    let selectedType = [...addQuestionForm.querySelector("select").children].find(option => option.selected).value;
+    let question = addQuestionForm.querySelector("#questionText").value.trim();
+    let options = addQuestionForm.querySelector("#options").value.split(/, +|,/)
+                                                           .map(str => str.trim())
+                                                           .filter(str => str.length > 0);
+
+    let ul = document.createElement("ul");
+    ul.id = "errors";
+
+    if (question.length <= 0) {
+      let li = document.createElement("li");
+      li.classList.add("flash", "error");
+      li.textContent = "The question field is required.";
+      ul.append(li);
+
+      addQuestionForm.querySelector("#questionText").classList.add("invalid");
+    }
+
+    if (["closed", "nominal"].includes(selectedType) && options.length === 0) {
+      let li = document.createElement("li");
+      li.classList.add("flash", "error");
+      li.textContent = "Please provide options in the correct format.";
+      ul.append(li);
+
+      addQuestionForm.querySelector("#options").classList.add("invalid");
+    }
+
+    if (ul.children.length > 0) {
+      addQuestionForm.insertAdjacentElement("afterbegin", ul);
+    } else {
+      addQuestionForm.submit();
+    }
   });
 
   submitSurveyForm && submitSurveyForm.addEventListener("submit", event => {

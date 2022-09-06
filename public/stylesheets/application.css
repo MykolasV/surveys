@@ -196,6 +196,11 @@ form.delete button img {
   text-align: center;
 }
 
+.add_question .invlid,
+.edit_question .invliad {
+  border-color: red;
+}
+
 .overlay {
   display: none;
   background-color: #8092b1;
