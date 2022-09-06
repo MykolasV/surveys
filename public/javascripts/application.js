@@ -37,10 +37,64 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (target.classList.contains("cancel")) {
       li.querySelector(".edit_question").style.display = "none";
       li.querySelector(".edit_question").nextElementSibling.style.display = "none";
+
+      let errors = li.querySelector(".edit_question #errors");
+      if (errors) errors.remove();
+  
+      li.querySelectorAll(".edit_question form .invalid").forEach(el => el.classList.remove("invalid"));
     } else if (target.classList.contains("overlay")) {
       li.querySelector(".edit_question").style.display = "none";
       target.style.display = "none";
+
+      let errors = li.querySelector(".edit_question #errors");
+      if (errors) errors.remove();
+  
+      li.querySelectorAll(".edit_question form .invalid").forEach(el => el.classList.remove("invalid"));
     }
+  });
+
+  questions && [...questions.querySelectorAll(".edit_question form")].forEach(form => {
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+
+      let errors = form.querySelector("#errors");
+      if (errors) errors.remove();
+
+      form.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+
+      let selectedType = [...form.querySelector("select").children].find(option => option.selected).value;
+      let question = form.querySelector("#questionText").value.trim();
+      let options = form.querySelector("#options").value.split(/, +|,/)
+                                                            .map(str => str.trim())
+                                                            .filter(str => str.length > 0);
+
+      let ul = document.createElement("ul");
+      ul.id = "errors";
+
+      if (question.length <= 0) {
+        let li = document.createElement("li");
+        li.classList.add("flash", "error");
+        li.textContent = "The question field is required.";
+        ul.append(li);
+
+        form.querySelector("#questionText").classList.add("invalid");
+      }
+
+      if (["closed", "nominal"].includes(selectedType) && options.length === 0) {
+        let li = document.createElement("li");
+        li.classList.add("flash", "error");
+        li.textContent = "Please provide options in the correct format.";
+        ul.append(li);
+
+        form.querySelector("#options").classList.add("invalid");
+      }
+
+      if (ul.children.length > 0) {
+        form.insertAdjacentElement("afterbegin", ul);
+      } else {
+        form.submit();
+      }
+    });
   });
 
   addFormLink && addFormLink.addEventListener("click", event => {
