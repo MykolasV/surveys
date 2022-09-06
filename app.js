@@ -295,7 +295,7 @@ app.post("/surveys/:surveyId/questions/:questionId",
       } else {
         let questionText = req.body.questionText;
         let questionType = req.body.questionType;
-        let options = req.body.options.split(/, +|,/).map(option => option.trim());
+        let options = req.body.options.split(/, +|,/).map(option => option.trim()).filter(option => option.length > 0);
 
         let updated = await res.locals.store.updateQuestion(+surveyId, +questionId, questionText, questionType, options);
         if (!updated) throw new Error("Not Found");
