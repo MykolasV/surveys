@@ -1,4 +1,5 @@
-/* CSS for all cell phones and shared cross-browser CSS */
+/* ===== CSS for all cell phones and shared cross-browser CSS ===== */
+
 html {
   box-sizing: border-box;
 }
@@ -468,9 +469,7 @@ span.option {
   background-color: #c9d6f7;
 }
 
-@media screen and (min-width: 481px) {
-  /* CSS for tablets and larger */
-}
+/* ===== Adjustments for larger screens ===== */
 
 @media screen and (min-width: 685px) {
   form dd input {
@@ -513,7 +512,6 @@ span.option {
 }
 
 @media screen and (min-width: 961px) {
-  /* CSS for small desktop and laptop screens and larger */
   .add_question,
   .edit_question {
     width: 80%;
@@ -544,7 +542,6 @@ span.option {
 }
 
 @media screen and (min-width: 1501px) {
-  /* CSS for large laptop and desktop displays */
   form dd input {
     width: 30%;
   }
