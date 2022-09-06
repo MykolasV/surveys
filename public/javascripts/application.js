@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (target.classList.contains("cancel")) {
       li.querySelector(".edit_question").style.display = "none";
       li.querySelector(".edit_question").nextElementSibling.style.display = "none";
+      li.querySelector(".edit_question form").reset();
 
       let errors = li.querySelector(".edit_question #errors");
       if (errors) errors.remove();
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (target.classList.contains("overlay")) {
       li.querySelector(".edit_question").style.display = "none";
       target.style.display = "none";
+      li.querySelector(".edit_question form").reset();
 
       let errors = li.querySelector(".edit_question #errors");
       if (errors) errors.remove();
@@ -112,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector(".add_question").style.display = "none";
     target.style.display = "none";
+    document.querySelector(".add_question form").reset();
 
     let errors = addQuestionForm.querySelector("#errors");
     if (errors) errors.remove();
@@ -122,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
   cancelAddQuestion && cancelAddQuestion.addEventListener("click", event => {
     document.querySelector(".add_question").style.display = "none";
     document.querySelector("main .overlay").style.display = "none";
+    document.querySelector(".add_question form").reset();
 
     let errors = addQuestionForm.querySelector("#errors");
     if (errors) errors.remove();
