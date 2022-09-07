@@ -2,19 +2,27 @@
 
 An Application for creating surveys.
 
-## - Create an Account and sign in
+- Create an Account and sign In
+- Create a survey
+- Add questions
+  - The answers can be 1 required out of multiple - "closed", 1 or more required
+    out of multiple - "nominal", and "write your answer" - "open".
+- Publish the survey
+- Share the link with participants
+- Get the participants to complete the survey
+- View statistics for the answers to each question
 
-## - Create a Survey
+## Setting it up on your own machine
+- Clone the repository
 
-## - Add questions
+  `git clone https://github.com/MykolasV/surveys.git`
 
-The answers can be 1 required out of multiple - "closed", 1 or more required
-out of multiple - "nominal", and "write your answer" - "open".
+- Install the dependencies:
+  
+  `npm install`
 
-## - Publish the survey
+- Run the app locally:
 
-## - Share the link with participants
+  `npm start`
 
-## - Get the participants to complete the survey
-
-## - Get statistics for the answers to each question
+- Visit `http://localhost:3000` in your browser to use the application
