@@ -2,7 +2,7 @@
 
 An Application for creating surveys.
 
-- Create an Account and sign In
+- Create an Account and sign in
 - Create a survey
 - Add questions
   - The answers can be 1 required out of multiple - "closed", 1 or more required
