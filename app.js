@@ -60,8 +60,8 @@ app.use((req, res, next) => {
 
 // Keep track of survey submission state
 app.use((req, res, next) => {
-  req.session.submittedForms = req.session.submittedForms || {};
-  res.locals.submittedForms = req.session.submittedForms;
+  req.session.submittedSurveys = req.session.submittedSurveys || {};
+  res.locals.submittedSurveys = req.session.submittedSurveys;
   next();
 });
 
@@ -73,13 +73,6 @@ const requiresAuthentication = (req, res, next) => {
     next();
   }
 };
-
-// End survey page
-app.get("/surveys/end",
-  catchError(async (req, res) => {
-    res.render("end-survey");
-  })
-);
 
 // Redirect start page
 app.get("/", (req, res) => {
@@ -151,6 +144,13 @@ app.post("/surveys",
         res.redirect("/surveys");
       }
     }
+  })
+);
+
+// Submitted survey page
+app.get("/surveys/end",
+  catchError(async (req, res) => {
+    res.render("end-survey");
   })
 );
 
@@ -513,8 +513,8 @@ app.get("/surveys/published/:surveyId/start",
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
 
-    if (res.locals.submittedForms[surveyId] === true) {
-      res.redirect(`/surveys/end`);
+    if (res.locals.submittedSurveys[surveyId] === true) {
+      res.redirect("/surveys/end");
     } else {
       res.render("start-survey", { surveyId });
     }
@@ -526,7 +526,7 @@ app.get("/surveys/published/:surveyId",
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
 
-    if (res.locals.submittedForms[surveyId] === true) {
+    if (res.locals.submittedSurveys[surveyId] === true) {
       res.redirect("/surveys/end");
     } else {
       let survey = await res.locals.store.loadPublishedSurvey(+surveyId);
@@ -542,7 +542,7 @@ app.post("/surveys/published/:surveyId",
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
 
-    if (res.locals.submittedForms[surveyId] === true) {
+    if (res.locals.submittedSurveys[surveyId] === true) {
       res.redirect("/surveys/end");
       return;
     }
@@ -575,7 +575,7 @@ app.post("/surveys/published/:surveyId",
         if (!added) throw new Error("Not Found.");
       }
 
-      req.session.submittedForms[surveyId] = true;
+      req.session.submittedSurveys[surveyId] = true;
       res.redirect("/surveys/end");
     }
   })
