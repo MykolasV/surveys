@@ -445,6 +445,10 @@ form .actions {
   height: auto;
 }
 
+.submit_survey dt {
+  margin-bottom: 20px;
+}
+
 .submit_survey dd {
   margin-bottom: 60px;
 }
@@ -452,7 +456,9 @@ form .actions {
 .submit_survey label,
 .submit_survey input {
   display: inline-block;
+  vertical-align: middle;
   width: auto;
+  text-align: left;
 }
 
 .submit_survey dt label {
@@ -460,7 +466,7 @@ form .actions {
 }
 
 .submit_survey dd label {
-  margin: 0 10px;
+  margin: 0 0 0 10px;
 }
 
 .submit_survey button {
@@ -469,7 +475,8 @@ form .actions {
 }
 
 .wrapper {
-  display: inline-block;
+  display: block;
+  margin: 0 0 10px 0;
 }
 
 .required {
