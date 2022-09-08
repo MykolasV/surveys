@@ -471,6 +471,7 @@ form .actions {
   display: inline-block;
   vertical-align: middle;
   width: auto;
+  height: auto;
   text-align: left;
 }
 
