@@ -10,12 +10,22 @@ html {
 
 body {
   font-family: "PT Sans", sans-serif;
-  background-color: #5C69AC;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 400'%3E%3Cdefs%3E%3CradialGradient id='a' cx='396' cy='281' r='514' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%238EB6DD'/%3E%3Cstop offset='1' stop-color='%235C69AC'/%3E%3C/radialGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='400' y1='148' x2='400' y2='333'%3E%3Cstop offset='0' stop-color='%23C0DEE8' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23C0DEE8' stop-opacity='0.5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='800' height='400'/%3E%3Cg fill-opacity='0.15'%3E%3Ccircle fill='url(%23b)' cx='267.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='532.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='400' cy='30' r='300'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: #5668A5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 400'%3E%3Cdefs%3E%3CradialGradient id='a' cx='396' cy='281' r='514' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23FFFFFF'/%3E%3Cstop offset='1' stop-color='%235668A5'/%3E%3C/radialGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='400' y1='148' x2='400' y2='333'%3E%3Cstop offset='0' stop-color='%23FFFFFF' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23FFFFFF' stop-opacity='0.5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='800' height='400'/%3E%3Cg fill-opacity='0.5'%3E%3Ccircle fill='url(%23b)' cx='267.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='532.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='400' cy='30' r='300'/%3E%3C/g%3E%3C/svg%3E");
   background-attachment: fixed;
   background-size: cover;
   text-align: center;
   font-size: 20px;
+  padding: 0 20px 40px;
+}
+
+main {
+  background-color: rgb(255, 255, 255, 0.7);
+  border-radius: 14px;
+}
+
+main:has(a.start_survey) {
+  background: none;
 }
 
 header {
@@ -73,9 +83,9 @@ main > img {
   }
 }
 
-main {
+body main {
   width: 100%;
-  padding: 0 15px;
+  padding: 20px;
 }
 
 main header {
@@ -98,18 +108,6 @@ a.start_survey:hover {
   color: #8092b1;
 }
 
-.actions a,
-a#add_form_link,
-button,
-header form.edit,
-header form.delete {
-  padding: 10px;
-  border: 1px solid #8092b1;
-  border-radius: 5px;
-  background-color: #c1d1f6;
-  cursor: pointer;
-}
-
 button {
   font-size: inherit;
   font-family: inherit;
@@ -117,12 +115,24 @@ button {
   padding: 10px 20px;
 }
 
+.actions a,
+a#add_form_link,
+button,
+header form.edit,
+header form.delete {
+  padding: 10px;
+  border: 1px solid #c6c6c6;
+  border-radius: 8px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
 .actions a:hover,
 a#add_form_link:hover,
 button:hover,
 header form.edit:hover,
 header form.delete:hover {
-  background-color: #b0c1e4;
+  background-color: #f2f1f1;
   color: inherit;
 }
 
@@ -137,6 +147,7 @@ header form.delete {
   width: 100%;
   padding: 4px 0;
   margin: 0 auto 8px;
+  border-radius: 6px;
 }
 
 .error {
@@ -187,19 +198,25 @@ form.delete button img {
 .add_question,
 .edit_question {
   display: none;
-  background-color: #dae0f9;
+  background-color: #fff;
   width: 90%;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 3;
   text-align: center;
+  border-radius: 14px;
 }
 
 .add_question .invalid,
 .edit_question .invalid {
   border-color: red;
+}
+
+.add_question #errors,
+.edit_question #errors {
+  margin: 0 5px;
 }
 
 #questions .edit_question li.flash.error {
@@ -214,7 +231,7 @@ form.delete button img {
 .overlay {
   display: none;
   background-color: #8092b1;
-  opacity: .9;
+  opacity: 0.9;
   width: 100%;
   height: 100%;
   position: fixed;
@@ -277,10 +294,10 @@ form .actions {
 #surveys_list li {
   display: inline-block;
   vertical-align: top;
-  background-color: #c9d6f7;
+  background-color: #f7f7f7;
   width: 220px;
   margin: 0 0 30px;
-  border: 1px solid #8092b1;
+  border: 1px solid #c6c6c6;
   border-radius: 10px;
 }
 
@@ -332,8 +349,9 @@ form .actions {
   width: 100%;
   padding: 10px;
   margin: 0 auto 25px;
-  border-radius: 6px;
-  background-color: #c9d6f7;
+  border-radius: 10px;
+  background-color: #fff;
+  border: 1px solid #e0e6f8;
   text-align: justify;
 }
 
@@ -465,20 +483,23 @@ span.option {
   display: block;
   padding: 10px;
   margin: 0 auto 10px;
-  border-radius: 8px;
-  background-color: #c9d6f7;
+  border-radius: 10px;
+  background-color: #fff;
+  border: 1px solid #e0e6f8;
 }
 
 /* ===== Adjustments for larger screens ===== */
 
-@media screen and (min-width: 685px) {
-  form dd input {
-    width: 50%;
-  }
-
+@media screen and (min-width: 481px) {
   #surveys_list li {
     margin-right: 30px;
     margin-left: 30px;
+  }
+}
+
+@media screen and (min-width: 685px) {
+  form dd input {
+    width: 50%;
   }
 
   .add_question {
@@ -509,9 +530,18 @@ span.option {
   span.option {
     width: 80%;
   }
+
+  .add_question #errors,
+  .edit_question #errors {
+    margin: 0 20px;
+  }
 }
 
 @media screen and (min-width: 961px) {
+  body {
+    padding: 0 100px 40px;
+  }
+
   .add_question,
   .edit_question {
     width: 80%;
@@ -542,6 +572,10 @@ span.option {
 }
 
 @media screen and (min-width: 1501px) {
+  body {
+    padding: 0 200px 40px;
+  }
+
   form dd input {
     width: 30%;
   }

@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
       li.querySelector(".edit_question").style.display = "block";
       li.querySelector(".overlay").style.display = "block";
-      li.querySelector("form select").focus();
     } else if (target.classList.contains("cancel")) {
       li.querySelector(".edit_question").style.display = "none";
       li.querySelector(".edit_question").nextElementSibling.style.display = "none";
@@ -141,8 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let targetParent = event.target.parentElement;
     targetParent.querySelector(".add_question").style.display = "block";
     targetParent.querySelector(".overlay").style.display = "block";
-
-    targetParent.querySelector(".add_question form select").focus();
   });
 
   addQuestionOverlay && addQuestionOverlay.addEventListener("click", event => {
