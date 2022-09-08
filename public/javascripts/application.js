@@ -246,4 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
       submitSurveyForm.submit();
     }
   });
+
+  // For firefox
+  let startSurvey = document.querySelector(".start_survey");
+  (startSurvey) && (startSurvey.closest("main").style.background = "none");
 });
