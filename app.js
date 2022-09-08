@@ -147,7 +147,7 @@ app.post("/surveys",
   })
 );
 
-// Submitted survey page
+// Survey completion page
 app.get("/surveys/end",
   catchError(async (req, res) => {
     res.render("end-survey");
@@ -160,7 +160,6 @@ app.get("/surveys/:surveyId",
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
     let survey = await res.locals.store.loadSurvey(+surveyId);
-
     if (survey === undefined) throw new Error("Not found.");
 
     res.render("survey", { survey });
