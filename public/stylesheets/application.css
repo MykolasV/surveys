@@ -251,6 +251,19 @@ form.delete button img {
   text-align: center;
 }
 
+a.doc_link {
+  display: block;
+  font-style: italic;
+  width: 64px;
+  height: 64px;
+  margin: 30px auto 0;
+  border-radius: 50%;
+}
+
+a.doc_link:hover {
+  background-color: #ebeaea;
+}
+
 /* ===== Sign up / Sign in page ===== */
 
 form {
