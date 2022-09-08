@@ -58,6 +58,13 @@ app.use((req, res, next) => {
   next();
 });
 
+// Keep track of survey submission state
+app.use((req, res, next) => {
+  req.session.submittedForms = req.session.submittedForms || {};
+  res.locals.submittedForms = req.session.submittedForms;
+  next();
+});
+
 // Detect unauthorized access to routes.
 const requiresAuthentication = (req, res, next) => {
   if (!res.locals.signedIn) {
@@ -66,6 +73,13 @@ const requiresAuthentication = (req, res, next) => {
     next();
   }
 };
+
+// End survey page
+app.get("/surveys/end",
+  catchError(async (req, res) => {
+    res.render("end-survey");
+  })
+);
 
 // Redirect start page
 app.get("/", (req, res) => {
@@ -497,19 +511,29 @@ app.post("/surveys/:surveyId/unpublish",
 // Start survey page
 app.get("/surveys/published/:surveyId/start",
   catchError(async (req, res) => {
+    let surveyId = req.params.surveyId;
 
-    res.render("start-survey", { surveyId: req.params.surveyId });
+    if (res.locals.submittedForms[surveyId] === true) {
+      res.redirect(`/surveys/end`);
+    } else {
+      res.render("start-survey", { surveyId });
+    }
   })
 );
 
 // Display published survey for participant
 app.get("/surveys/published/:surveyId",
   catchError(async (req, res) => {
-    let survey = await res.locals.store.loadPublishedSurvey(+req.params.surveyId);
+    let surveyId = req.params.surveyId;
 
-    if (!survey) throw new Error("Not Found");
+    if (res.locals.submittedForms[surveyId] === true) {
+      res.redirect("/surveys/end");
+    } else {
+      let survey = await res.locals.store.loadPublishedSurvey(+surveyId);
+      if (!survey) throw new Error("Not Found");
 
-    res.render("published-survey", { survey });
+      res.render("published-survey", { survey });
+    }
   })
 );
 
@@ -517,6 +541,12 @@ app.get("/surveys/published/:surveyId",
 app.post("/surveys/published/:surveyId",
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
+
+    if (res.locals.submittedForms[surveyId] === true) {
+      res.redirect("/surveys/end");
+      return;
+    }
+
     let survey = await res.locals.store.loadPublishedSurvey(+surveyId);
     if (!survey) throw new Error("Not Found.");
 
@@ -544,14 +574,16 @@ app.post("/surveys/published/:surveyId",
         let added = await res.locals.store.addAnswer(+surveyId, +questionId, +participantId, answer);
         if (!added) throw new Error("Not Found.");
       }
-  
-      res.render("end-survey");
+
+      req.session.submittedForms[surveyId] = true;
+      res.redirect("/surveys/end");
     }
   })
 );
 
 // Show results for question
 app.get("/surveys/:surveyId/questions/:questionId/results",
+  requiresAuthentication,
   catchError(async (req, res) => {
     let { surveyId, questionId} = req.params;
     let results = await res.locals.store.questionResults(surveyId, questionId);
