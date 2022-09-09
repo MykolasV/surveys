@@ -21,11 +21,9 @@ body {
 
 main {
   background-color: rgb(255, 255, 255, 0.7);
+  width: 100%;
+  padding: 20px 20px 48px;
   border-radius: 14px;
-}
-
-main:has(a.start_survey) {
-  background: none;
 }
 
 header {
@@ -49,8 +47,13 @@ h3 {
   margin: 20px 0 0;
 }
 
+p {
+  display: inline-block;
+}
+
 header h2 {
   display: inline-block;
+  vertical-align: middle;
   width: auto;
   margin: 0;
 }
@@ -83,17 +86,8 @@ main > img {
   }
 }
 
-body main {
-  width: 100%;
-  padding: 20px;
-}
-
 main header {
   margin: 20px 0;
-}
-
-p {
-  display: inline-block;
 }
 
 a {
@@ -139,7 +133,8 @@ header form.delete:hover {
 header form.edit,
 header form.delete {
   display: inline-block;
-  margin: 0 0 0 20px;
+  vertical-align: middle;
+  margin: 10px 0 0 0;
   padding: 0;
 }
 
@@ -374,7 +369,6 @@ form .actions {
 }
 
 #questions li p {
-  display: inline-block;
   text-align: left;
   width: 70%;
   margin: 0;
@@ -428,7 +422,6 @@ form .actions {
 /* ===== Published Survey Page ===== */
 
 #questions.published li p {
-  display: inline-block;
   vertical-align: middle;
   margin: 0;
   text-align: left;
@@ -519,9 +512,19 @@ form .actions {
     margin-right: 30px;
     margin-left: 30px;
   }
+
+  header form.edit,
+  header form.delete {
+    margin: 0 0 0 20px;
+  }
 }
 
 @media screen and (min-width: 685px) {
+  body {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
   form dd input {
     width: 50%;
   }
@@ -538,10 +541,7 @@ form .actions {
     width: 90%;
   }
 
-  h2 {
-    width: 70%;
-  }
-
+  h2,
   main p {
     width: 70%;
   }
@@ -567,8 +567,8 @@ form .actions {
 
 @media screen and (min-width: 961px) {
   body {
-    padding-left: 80px;
-    padding-right: 80px;
+    padding-left: 180px;
+    padding-right: 180px;
   }
 
   .add_question,
@@ -615,13 +615,13 @@ form .actions {
     width: 30%;
   }
 
-  .add_question input,
-  .edit_question input {
+  .add_question,
+  .edit_question {
     width: 60%;
   }
 
-  .add_question,
-  .edit_question {
+  .add_question input,
+  .edit_question input {
     width: 60%;
   }
 
