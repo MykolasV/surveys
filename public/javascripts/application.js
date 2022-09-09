@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Validate the forms for creating and updating a question before submission
-  [...questions.querySelectorAll(".edit_question form"), addQuestionForm].forEach(form => {
+  [...document.querySelectorAll(".edit_question form"), addQuestionForm].forEach(form => {
     if (!form) return;
 
     form.addEventListener("submit", event => {
