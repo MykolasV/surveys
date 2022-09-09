@@ -27,23 +27,22 @@ document.addEventListener('DOMContentLoaded', () => {
       let p = document.createElement("p");
       p.textContent = message;
       modal.append(p);
-      modal.style.display = "block";
 
       let yesButton = document.createElement("button");
       yesButton.textContent = "Yes";
       let noButton = document.createElement("button");
       noButton.textContent = "No";
       let buttons = document.createElement("div");
-      buttons.classList.add("buttons");
       buttons.append(yesButton, noButton);
       modal.append(buttons);
 
       let overlay = document.createElement("div");
       overlay.classList.add("overlay");
-      overlay.style.display = "block";
 
       main.insertAdjacentElement("afterbegin", modal);
       modal.insertAdjacentElement("afterend", overlay);
+      modal.style.display = "block";
+      overlay.style.display = "block";
 
       yesButton.addEventListener("click", event => {
         event.preventDefault();
@@ -51,19 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
         element.submit();
       });
 
-      noButton.addEventListener("click", event => {
-        event.preventDefault();
+      [noButton, overlay].forEach(el => {
+        el.addEventListener("click", event => {
+          event.preventDefault();
 
-        overlay.remove();
-        modal.remove();
+          overlay.remove();
+          modal.remove();
+        });
       });
-
-      overlay.addEventListener("click", event => {
-        event.preventDefault();
-
-        overlay.remove();
-        modal.remove();
-      })
     });
   });
 
