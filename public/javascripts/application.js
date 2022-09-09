@@ -123,8 +123,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Validate the form for updating a question before submission
-  questions && [...questions.querySelectorAll(".edit_question form")].forEach(form => {
+  // Show the form for creating a question
+  addFormLink && addFormLink.addEventListener("click", event => {
+    event.preventDefault();
+
+    let targetParent = event.target.parentElement;
+    targetParent.querySelector(".add_question").style.display = "block";
+    targetParent.querySelector(".overlay").style.display = "block";
+  });
+
+  // Hide the form for creating a question
+  addQuestionOverlay && addQuestionOverlay.addEventListener("click", event => {
+    let target = event.target;
+
+    document.querySelector(".add_question").style.display = "none";
+    target.style.display = "none";
+    document.querySelector(".add_question form").reset();
+
+    let errors = addQuestionForm.querySelector("#errors");
+    if (errors) errors.remove();
+
+    addQuestionForm.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+  });
+
+  cancelAddQuestion && cancelAddQuestion.addEventListener("click", event => {
+    document.querySelector(".add_question").style.display = "none";
+    document.querySelector("main .overlay").style.display = "none";
+    document.querySelector(".add_question form").reset();
+
+    let errors = addQuestionForm.querySelector("#errors");
+    if (errors) errors.remove();
+
+    addQuestionForm.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+  });
+
+  // Validate the forms for creating and updating a question before submission
+  [...questions.querySelectorAll(".edit_question form"), addQuestionForm].forEach(form => {
+    if (!form) return;
+
     form.addEventListener("submit", event => {
       event.preventDefault();
 
@@ -166,83 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
         form.submit();
       }
     });
-  });
-
-  // Show the form for creating a question
-  addFormLink && addFormLink.addEventListener("click", event => {
-    event.preventDefault();
-
-    let targetParent = event.target.parentElement;
-    targetParent.querySelector(".add_question").style.display = "block";
-    targetParent.querySelector(".overlay").style.display = "block";
-  });
-
-  // Hide the form for creating a question
-  addQuestionOverlay && addQuestionOverlay.addEventListener("click", event => {
-    let target = event.target;
-
-    document.querySelector(".add_question").style.display = "none";
-    target.style.display = "none";
-    document.querySelector(".add_question form").reset();
-
-    let errors = addQuestionForm.querySelector("#errors");
-    if (errors) errors.remove();
-
-    addQuestionForm.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
-  });
-
-  cancelAddQuestion && cancelAddQuestion.addEventListener("click", event => {
-    document.querySelector(".add_question").style.display = "none";
-    document.querySelector("main .overlay").style.display = "none";
-    document.querySelector(".add_question form").reset();
-
-    let errors = addQuestionForm.querySelector("#errors");
-    if (errors) errors.remove();
-
-    addQuestionForm.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
-  });
-
-  // Validate the form for creating a question before submission
-  addQuestionForm && addQuestionForm.addEventListener("submit", event => {
-    event.preventDefault();
-
-    let errors = addQuestionForm.querySelector("#errors");
-    if (errors) errors.remove();
-
-    addQuestionForm.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
-
-    let selectedType = [...addQuestionForm.querySelector("select").children].find(option => option.selected).value;
-    let question = addQuestionForm.querySelector("#questionText").value.trim();
-    let options = addQuestionForm.querySelector("#options").value.split(/, +|,/)
-                                                           .map(str => str.trim())
-                                                           .filter(str => str.length > 0);
-
-    let ul = document.createElement("ul");
-    ul.id = "errors";
-
-    if (question.length <= 0) {
-      let li = document.createElement("li");
-      li.classList.add("flash", "error");
-      li.textContent = "The question field is required.";
-      ul.append(li);
-
-      addQuestionForm.querySelector("#questionText").classList.add("invalid");
-    }
-
-    if (["closed", "nominal"].includes(selectedType) && options.length === 0) {
-      let li = document.createElement("li");
-      li.classList.add("flash", "error");
-      li.textContent = "Please provide options in the correct format.";
-      ul.append(li);
-
-      addQuestionForm.querySelector("#options").classList.add("invalid");
-    }
-
-    if (ul.children.length > 0) {
-      addQuestionForm.insertAdjacentElement("afterbegin", ul);
-    } else {
-      addQuestionForm.submit();
-    }
   });
 
   // Validate the survey form before submission
