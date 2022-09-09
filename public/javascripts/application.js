@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Show or hide edit question form
+  // Show or hide the form for updating a question
   questions && questions.addEventListener("click", event => {
     let target = event.target;
     let li = target.closest("li");
