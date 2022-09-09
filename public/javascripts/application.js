@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
       yesButton.textContent = "Yes";
       let noButton = document.createElement("button");
       noButton.textContent = "No";
+
       let buttons = document.createElement("div");
       buttons.append(yesButton, noButton);
       modal.append(buttons);
