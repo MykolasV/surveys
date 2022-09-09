@@ -283,7 +283,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // For firefox
+
   let startSurvey = document.querySelector(".start_survey");
   (startSurvey) && (startSurvey.closest("main").style.background = "none");
+
+  let endSurvey = document.querySelector("#thanks");
+  (endSurvey) && (endSurvey.closest("main").style.background = "none");
 });
