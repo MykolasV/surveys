@@ -12,18 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
       event.stopPropagation();
 
-      // let element = event.target;
-      // let message;
-      // if (element.classList.contains("delete")) {
-      //   message = "Are you sure? This cannot be undone!";
-      // } else if (element.classList.contains("unpublish")) {
-      //   message = "Are you sure? All of the answers will be lost!";
-      // }
-
-      // if (confirm(message)) {
-      //   element.submit();
-      // }
-
       let element = event.target;
       let message;
       if (element.classList.contains("delete")) {
