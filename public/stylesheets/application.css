@@ -196,7 +196,8 @@ form.delete button img {
 }
 
 .add_question,
-.edit_question {
+.edit_question,
+.confirm_modal {
   display: none;
   background-color: #fff;
   width: 90%;
@@ -207,6 +208,11 @@ form.delete button img {
   z-index: 3;
   text-align: center;
   border-radius: 14px;
+}
+
+.confirm_modal {
+  /* height: 150px; */
+  padding: 20px 5px;
 }
 
 .add_question .invalid,
@@ -556,6 +562,10 @@ span.option {
   .edit_question #errors {
     margin: 0 20px;
   }
+
+  .confirm_modal {
+    width: 60%;
+  }
 }
 
 @media screen and (min-width: 961px) {
@@ -589,6 +599,10 @@ span.option {
   span.answer,
   span.option {
     width: 60%;
+  }
+
+  .confirm_modal {
+    width: 40%;
   }
 }
 
@@ -627,5 +641,9 @@ span.option {
   span.answer,
   span.option {
     width: 40%;
+  }
+
+  .confirm_modal {
+    width: 30%;
   }
 }

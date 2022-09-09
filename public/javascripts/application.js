@@ -12,17 +12,70 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
       event.stopPropagation();
 
+      // let element = event.target;
+      // let message;
+      // if (element.classList.contains("delete")) {
+      //   message = "Are you sure? This cannot be undone!";
+      // } else if (element.classList.contains("unpublish")) {
+      //   message = "Are you sure? All of the answers will be lost!";
+      // }
+
+      // if (confirm(message)) {
+      //   element.submit();
+      // }
+
       let element = event.target;
       let message;
       if (element.classList.contains("delete")) {
-        message = "Are you sure? This cannot be undone!";
+        message = "Are you sure you want to delete this? It cannot be undone!";
       } else if (element.classList.contains("unpublish")) {
         message = "Are you sure? All of the answers will be lost!";
       }
 
-      if (confirm(message)) {
+      let main = document.querySelector("main");
+
+      let modal = document.createElement("div");
+      modal.classList.add("confirm_modal");
+      let p = document.createElement("p");
+      p.textContent = message;
+      modal.append(p);
+      modal.style.display = "block";
+
+      let yesButton = document.createElement("button");
+      yesButton.textContent = "Yes";
+      let noButton = document.createElement("button");
+      noButton.textContent = "No";
+      let buttons = document.createElement("div");
+      buttons.classList.add("buttons");
+      buttons.append(yesButton, noButton);
+      modal.append(buttons);
+
+      let overlay = document.createElement("div");
+      overlay.classList.add("overlay");
+      overlay.style.display = "block";
+
+      main.insertAdjacentElement("afterbegin", modal);
+      modal.insertAdjacentElement("afterend", overlay);
+
+      yesButton.addEventListener("click", event => {
+        event.preventDefault();
+
         element.submit();
-      }
+      });
+
+      noButton.addEventListener("click", event => {
+        event.preventDefault();
+
+        overlay.remove();
+        modal.remove();
+      });
+
+      overlay.addEventListener("click", event => {
+        event.preventDefault();
+
+        overlay.remove();
+        modal.remove();
+      })
     });
   });
 
