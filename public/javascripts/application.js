@@ -70,20 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let selected = [...surveysFilter.children].find(option => option.selected).value;
     let surveys = [...document.querySelector("#surveys_list").children];
-    
+
     if (selected === "all") {
       surveys.forEach(survey => survey.style.display = "inline-block");
-    } else if (selected === "unpublished") {
+    } else {
       surveys.forEach(survey => {
-        if (survey.classList.contains("unpublished")) {
-          survey.style.display = "inline-block";
-        } else {
-          survey.style.display = "none";
-        }
-      });
-    } else if (selected === "published") {
-      surveys.forEach(survey => {
-        if (survey.classList.contains("published")) {
+        if (survey.classList.contains(selected)) {
           survey.style.display = "inline-block";
         } else {
           survey.style.display = "none";
