@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cancelAddQuestion = document.querySelector(".add_question button.cancel");
   const submitSurveyForm = document.querySelector(".submit_survey");
 
+  // Confirmation dialogs
   document.querySelectorAll("form.delete, form.unpublish").forEach(form => {
     form.addEventListener("submit", event => {
       event.preventDefault();
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Filter surveys according to selection
   surveysFilter && surveysFilter.addEventListener("change", event => {
     let message = document.querySelector("#surveys_filter + p");
     if (message) message.remove();
@@ -97,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Show or hide edit question form
   questions && questions.addEventListener("click", event => {
     let target = event.target;
     let li = target.closest("li");
@@ -126,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Validate the form for updating a question before submission
   questions && [...questions.querySelectorAll(".edit_question form")].forEach(form => {
     form.addEventListener("submit", event => {
       event.preventDefault();
@@ -170,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Show the form for creating a question
   addFormLink && addFormLink.addEventListener("click", event => {
     event.preventDefault();
 
@@ -178,6 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     targetParent.querySelector(".overlay").style.display = "block";
   });
 
+  // Hide the form for creating a question
   addQuestionOverlay && addQuestionOverlay.addEventListener("click", event => {
     let target = event.target;
 
@@ -202,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     addQuestionForm.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
   });
 
+  // Validate the form for creating a question before submission
   addQuestionForm && addQuestionForm.addEventListener("submit", event => {
     event.preventDefault();
 
@@ -244,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Validate the survey form before submission
   submitSurveyForm && submitSurveyForm.addEventListener("submit", event => {
     event.preventDefault();
     event.stopPropagation();
@@ -283,7 +291,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-
+  // Work-around to get rid of the preset background for `main` on first and
+  // and last pages of survey
   let startSurvey = document.querySelector(".start_survey");
   (startSurvey) && (startSurvey.closest("main").style.background = "none");
 
