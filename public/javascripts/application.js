@@ -96,28 +96,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let target = event.target;
     let li = target.closest("li");
 
+    let editQuestion = li.querySelector(".edit_question");
+
     if (target.closest(".edit_form_link")) {
       event.preventDefault();
-      li.querySelector(".edit_question").style.display = "block";
+      editQuestion.style.display = "block";
       li.querySelector(".overlay").style.display = "block";
     } else if (target.classList.contains("cancel")) {
-      li.querySelector(".edit_question").style.display = "none";
-      li.querySelector(".edit_question").nextElementSibling.style.display = "none";
-      li.querySelector(".edit_question form").reset();
+      editQuestion.style.display = "none";
+      editQuestion.nextElementSibling.style.display = "none";
+      editQuestion.querySelector("form").reset();
 
-      let errors = li.querySelector(".edit_question #errors");
+      let errors = editQuestion.querySelector("#errors");
       if (errors) errors.remove();
   
-      li.querySelectorAll(".edit_question form .invalid").forEach(el => el.classList.remove("invalid"));
+      editQuestion.querySelectorAll("form .invalid").forEach(el => el.classList.remove("invalid"));
     } else if (target.classList.contains("overlay")) {
-      li.querySelector(".edit_question").style.display = "none";
+      editQuestion.style.display = "none";
       target.style.display = "none";
-      li.querySelector(".edit_question form").reset();
+      editQuestion.querySelector("form").reset();
 
-      let errors = li.querySelector(".edit_question #errors");
+      let errors = editQuestion.querySelector("#errors");
       if (errors) errors.remove();
   
-      li.querySelectorAll(".edit_question form .invalid").forEach(el => el.classList.remove("invalid"));
+      editQuestion.querySelectorAll("form .invalid").forEach(el => el.classList.remove("invalid"));
     }
   });
 
