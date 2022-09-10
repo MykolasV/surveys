@@ -4,7 +4,7 @@ An Application for creating and managing surveys.
 
 ![image](screenshots/surveys.png)
 
-- Create an Account and sign in
+- Create an account and sign in
 - Create a survey
 - Add questions
   - The answers can be 1 required out of multiple - "closed", 1 or more required
