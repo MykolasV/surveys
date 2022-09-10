@@ -1,6 +1,6 @@
 # Surveys
 
-An Application for creating surveys.
+An Application for creating and managing surveys.
 
 ![image](screenshots/surveys.png)
 
