@@ -2,6 +2,8 @@
 
 An Application for creating surveys.
 
+![image](screenshots/surveys.png)
+
 - Create an Account and sign in
 - Create a survey
 - Add questions
