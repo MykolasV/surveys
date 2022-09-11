@@ -3,3 +3,4 @@ node_modules
 session-store.db
 lib/users.sql
 lib/seed-data.sql
+.env
