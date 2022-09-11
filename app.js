@@ -32,13 +32,6 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   secret: "this is not very secure",
-  // Remember: the secret value is sensitive data that needs protection from prying eyes.
-  // Including it in the source code -- as we do here -- isn't safe.
-  // However, since we only respond to requests from the localhost, we're safe for now.
-  // Don't make this program more widely available without addressing this issue.
-
-  // You should obtain the secret value from an external source that is only available to
-  // your servers, such as a database or a local file.
   store: new LokiStore({}),
 }));
 
