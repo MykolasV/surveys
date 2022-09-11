@@ -244,11 +244,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Work-around to get rid of the preset background for `main` on first and
-  // and last pages of survey
+  // Work-around to get rid of the preset background
   let startSurvey = document.querySelector(".start_survey");
   (startSurvey) && (startSurvey.closest("main").style.background = "none");
 
   let endSurvey = document.querySelector("#thanks");
   (endSurvey) && (endSurvey.closest("main").style.background = "none");
+
+  let noList = document.querySelector("#no_list");
+  (noList) && (noList.closest("main").style.background = "none");
 });
