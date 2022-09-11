@@ -607,8 +607,8 @@ form .actions {
 
 @media screen and (min-width: 1501px) {
   body {
-    padding-left: 200px;
-    padding-right: 200px;
+    padding-left: 220px;
+    padding-right: 220px;
   }
 
   form dd input {
