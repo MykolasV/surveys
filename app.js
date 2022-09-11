@@ -31,7 +31,7 @@ app.use(session({
   name: "surveys-session-id",
   resave: false,
   saveUninitialized: true,
-  secret: "this is not very secure",
+  secret: config.SECRET,
   store: new LokiStore({}),
 }));
 
