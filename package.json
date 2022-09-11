@@ -8,6 +8,7 @@
     "test": "test"
   },
   "scripts": {
+    "heroku-postbuild": "npm install --production",
     "start": "npx nodemon app.js",
     "test": "jest"
   },
@@ -28,5 +29,9 @@
     "morgan": "^1.10.0",
     "pg": "^8.7.3",
     "pug": "^3.0.2"
+  },
+  "engines": {
+    "node": "17.6.0",
+    "npm": "8.13.2"
   }
 }
