@@ -348,6 +348,7 @@ form .actions {
 }
 
 #surveys_filter select {
+  font-size: 18px;
   height: 26px;
   border-radius: 6px;
 }
