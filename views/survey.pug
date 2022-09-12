@@ -19,7 +19,7 @@ block main
           if !survey.published
             .question_actions
               a(href="#" class="edit_form_link ")
-                img(src="../images/pencil.png")
+                img(src="../images/pencil.png" alt="")
               .edit_question
                 form(action=`/surveys/${survey.id}/questions/${question.id}` method="post")
                   dl
