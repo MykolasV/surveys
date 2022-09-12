@@ -5,7 +5,7 @@ block main
     h2 Editing '#{survey.title}'
     form.delete(action=`/surveys/${survey.id}/destroy` method="post")
       button(type="submit")
-        img(src="../../images/trash.png")
+        img(src="../../images/trash.png" alt="")
 
   form(action=`/surveys/${survey.id}/edit` method="post")
     dl
