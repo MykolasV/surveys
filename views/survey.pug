@@ -6,7 +6,7 @@ block main
     if !survey.published
       form.edit(action=`/surveys/${survey.id}/edit` method="get")
         button(type="submit")
-          img(src="../images/pencil.png" alt="")
+          img(src="/images/pencil.png" alt="")
 
   ul#questions(class=`${survey.published ? "published" : ""}`)
     if survey.questions.length === 0
@@ -19,7 +19,7 @@ block main
           if !survey.published
             .question_actions
               a(href="#" class="edit_form_link ")
-                img(src="../images/pencil.png" alt="")
+                img(src="/images/pencil.png" alt="")
               .edit_question
                 form(action=`/surveys/${survey.id}/questions/${question.id}` method="post")
                   dl
@@ -63,14 +63,14 @@ block main
 
               form.delete(action=`/surveys/${survey.id}/questions/${question.id}/destroy` method="post")
                 button(type="submit")
-                  img(src="../images/trash.png" alt="")
+                  img(src="/images/trash.png" alt="")
           else
             form(action=`/surveys/${survey.id}/questions/${question.id}/results` method="get")
               button(type="submit") Answers
 
   if !survey.published
     if survey.questions === undefined || survey.questions.length === 0
-      img(src="../images/up-arrow.png" alt="")
+      img(src="/images/up-arrow.png" alt="")
     a(href="#" id="add_form_link") Add Question
     .add_question
       form(action=`/surveys/${survey.id}/questions` method="post")
