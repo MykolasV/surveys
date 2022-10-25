@@ -8,11 +8,13 @@ block main
         button(type="submit")
           img(src="/images/pencil.png" alt="")
 
-  ul#questions(class=`${survey.published ? "published" : ""}`)
-    if survey.questions.length === 0
-      p There are no questions in this survey.
-    else
-      h3 Questions
+  h3 Questions
+
+  if survey.questions.length === 0
+    ul#questions
+    p#no_list There are no questions in this survey.
+  else
+    ul#questions(class=`${survey.published ? "published" : ""}`)
       each question in survey.questions
         li
           p= question.question_text
