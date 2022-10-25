@@ -8,6 +8,7 @@ const { body, validationResult } = require("express-validator");
 const PgPersistence = require("./lib/pg-persistence");
 const catchError = require("./lib/catch-error");
 const { Session } = require("express-session");
+const { request } = require("express");
 
 const app = express();
 const host = config.HOST;
@@ -250,8 +251,12 @@ app.post("/surveys/:surveyId/questions/:questionId/destroy",
     let deleted = await res.locals.store.deleteQuestion(+surveyId, +questionId);
     if (!deleted) throw new Error("Not found.");
 
-    req.flash("success", "The question was deleted.");
-    res.redirect(`/surveys/${surveyId}`);
+    if (req.xhr) {
+      res.status(204).end();
+    } else {
+      req.flash("success", "The question was deleted.");
+      res.redirect(`/surveys/${surveyId}`);
+    }
   })
 );
 
@@ -307,8 +312,12 @@ app.post("/surveys/:surveyId/questions/:questionId",
         let updated = await res.locals.store.updateQuestion(+surveyId, +questionId, questionText, questionType, options);
         if (!updated) throw new Error("Not Found");
 
-        req.flash("success", "The question was updated.");
-        res.redirect(`/surveys/${surveyId}`);
+        if (req.xhr) {
+          res.status(204).end();
+        } else {
+          req.flash("success", "The question was updated.");
+          res.redirect(`/surveys/${surveyId}`);
+        }
       }
     }
   })
@@ -336,8 +345,13 @@ app.post("/surveys/:surveyId/destroy",
 
     if (!deleted) throw new Error("Not Found.");
 
-    req.flash("success", "Survey deleted.");
-    res.redirect("/surveys");
+    if (req.xhr) {
+      req.flash("success", "Survey deleted.");
+      res.status(200).send("/surveys");
+    } else {
+      req.flash("success", "Survey deleted.");
+      res.redirect("/surveys");
+    }
   })
 );
 

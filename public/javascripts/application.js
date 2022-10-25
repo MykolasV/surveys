@@ -13,11 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
       event.stopPropagation();
 
-      let element = event.target;
       let message;
-      if (element.classList.contains("delete")) {
+      if (form.classList.contains("delete")) {
         message = "Are you sure you want to delete this? It cannot be undone!";
-      } else if (element.classList.contains("unpublish")) {
+      } else if (form.classList.contains("unpublish")) {
         message = "Are you sure? All of the answers will be lost!";
       }
 
@@ -49,7 +48,49 @@ document.addEventListener('DOMContentLoaded', () => {
       yesButton.addEventListener("click", event => {
         event.preventDefault();
 
-        element.submit();
+        if (form.classList.contains("delete")) {
+          let request = new XMLHttpRequest();
+          request.open(form.method, form.action);
+          request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+  
+          request.addEventListener("load", event => {
+            if (request.status === 204) {
+              overlay.remove();
+              modal.remove();
+              form.closest("li").remove();
+  
+              let flashMessages = document.querySelectorAll(".flash");
+              if (flashMessages.length > 0) {
+                flashMessages[0].parentElement.remove();
+              }
+  
+              let ul = document.createElement("ul");
+              let li = document.createElement("li");
+              li.textContent = "The question was deleted."
+              li.classList.add("flash", "success");
+              ul.append(li);
+              document.querySelector("body > header h1").after(ul);
+
+              if (questions.children.length === 0) {
+                let p = document.createElement("p");
+                p.id = "no_list";
+                p.textContent = "There are no quesitons in this survey.";
+                questions.after(p);
+
+                let img = document.createElement("img");
+                img.src = "/images/up-arrow.png";
+                p.after(img);
+                p.closest("main").style.background = "none"
+              }
+            } else if (request.status === 200) {
+              document.location = request.responseText;
+            }
+          });
+  
+          request.send();
+        } else {
+          form.submit();
+        }
       });
 
       [noButton, overlay].forEach(el => {
@@ -199,7 +240,65 @@ document.addEventListener('DOMContentLoaded', () => {
       if (ul.children.length > 0) {
         form.insertAdjacentElement("afterbegin", ul);
       } else {
-        form.submit();
+        if (form.parentElement.classList.contains("edit_question")) {
+          function formValues(form) {
+            let keysAndValues = [];
+  
+            for (let index = 0; index < form.elements.length; index += 1) {
+              let element = form.elements[index];
+              let key;
+              let value;
+          
+              if (element.type !== 'submit') {
+                key = encodeURIComponent(element.name);
+                value = encodeURIComponent(element.value);
+                keysAndValues.push(`${key}=${value}`);
+              }
+            }
+          
+            return keysAndValues.join('&');
+          }
+  
+          let data = formValues(form);
+  
+          let request = new XMLHttpRequest();
+          request.open(form.method, form.action);
+          request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+          request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  
+          request.addEventListener("load", event => {
+            if (request.status === 204) {
+              form.querySelector(`select option[value=${selectedType}]`).selected = true;
+              form.querySelector("input#questionText").value = question;
+
+              let optionsInput = form.querySelector("input#options");
+              if (selectedType === "open") {
+                optionsInput.value = "";
+              } else {
+                optionsInput.value = options.join(", ");
+              }
+
+              form.parentElement.nextElementSibling.style.display = "none";
+              form.parentElement.style.display = "none";
+  
+              let flashMessages = document.querySelectorAll(".flash");
+              if (flashMessages.length > 0) {
+                flashMessages[0].parentElement.remove();
+              }
+  
+              let ul = document.createElement("ul");
+              let li = document.createElement("li");
+              li.textContent = "The question was updated."
+              li.classList.add("flash", "success");
+              ul.append(li);
+              document.querySelector("body > header h1").after(ul);
+            }
+          });
+  
+          request.send(data);
+        } else {
+          form.submit()
+        }
       }
     });
   });
