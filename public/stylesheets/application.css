@@ -322,6 +322,10 @@ form .actions {
   color: #8092b1;
 }
 
+.survey_details {
+  padding: 0 12px;
+}
+
 .survey_details p {
   display: block;
   margin: 20px auto;
@@ -407,7 +411,7 @@ form .actions {
   background-color: #acbfef;
 }
 
-#questions + img {
+#questions + p#no_list + img {
   transform: rotate(180deg);
   margin-bottom: 40px;
 }
