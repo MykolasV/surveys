@@ -519,8 +519,9 @@ app.post("/surveys/:surveyId/unpublish",
 app.get("/surveys/published/:surveyId/start",
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
+    let publishedOn = await res.locals.store.surveyPublishDate(+surveyId);
 
-    if (res.locals.submittedSurveys[surveyId] === true) {
+    if (res.locals.submittedSurveys[surveyId] === String(publishedOn)) {
       res.redirect("/surveys/end");
     } else {
       res.render("start-survey", { surveyId });
@@ -532,8 +533,9 @@ app.get("/surveys/published/:surveyId/start",
 app.get("/surveys/published/:surveyId",
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
-
-    if (res.locals.submittedSurveys[surveyId] === true) {
+    let publishedOn = await res.locals.store.surveyPublishDate(+surveyId);
+    
+    if (res.locals.submittedSurveys[surveyId] === String(publishedOn)) {
       res.redirect("/surveys/end");
     } else {
       let survey = await res.locals.store.loadPublishedSurvey(+surveyId);
@@ -548,8 +550,9 @@ app.get("/surveys/published/:surveyId",
 app.post("/surveys/published/:surveyId",
   catchError(async (req, res) => {
     let surveyId = req.params.surveyId;
+    let publishedOn = await res.locals.store.surveyPublishDate(+surveyId);
 
-    if (res.locals.submittedSurveys[surveyId] === true) {
+    if (res.locals.submittedSurveys[surveyId] === String(publishedOn)) {
       res.redirect("/surveys/end");
       return;
     }
@@ -582,7 +585,7 @@ app.post("/surveys/published/:surveyId",
         if (!added) throw new Error("Not Found.");
       }
 
-      req.session.submittedSurveys[surveyId] = true;
+      req.session.submittedSurveys[surveyId] = String(survey.published_on);
       res.redirect("/surveys/end");
     }
   })
